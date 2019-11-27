@@ -20,3 +20,26 @@
 .App-link {
   color: #09d3ac;
 }
+
+.flex_grid {
+  display: flex;
+  padding: 20px;
+}
+
+.flex_row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding-bottom: 20px;
+}
+
+.flex_col {
+  display: flex;
+  flex-direction: column;
+  padding-inline-end: 10px;
+}
+
+.col {
+  flex-basis: 20%;
+  padding: 20px;
+}
