@@ -23,7 +23,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 UI Window responsible for:
 - Displaying various data received over ROS
-- Input to sends GPS destination coordinates over ROS (only one pair currently)
+- Input to sends GPS destination coordinates over ROS, where destLat and destLon are both string[] types
 
 Requirements:
 - Node

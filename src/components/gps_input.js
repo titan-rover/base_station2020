@@ -5,58 +5,73 @@ class GPS_Input extends React.Component {
 
   constructor(props) {
     super(props);
+
+    //Set starting state
+    // number : represents number a fieldsets to display, start with 0 for one fieldset corresponding to index of arrays
+    // destLan and destLon : Arrays of destination coordinates to be sent over ROS, start as null (empty fields)
     this.state = {
       number : 0,
-      inputs : [{latitude:null,longitude:null},],
+      destLat : [null],
+      destLon : [null],
     };
 
 
   }
 
-  //Add another form to the input 'window'
+  //Add another null/empty fieldset to the gps input "window"
   addInput = () => {
-    let temp_inputs = this.state.inputs;
-    temp_inputs.push({latitude:null,longitude:null});
+    let tempLat = this.state.destLat;
+    let tempLon = this.state.destLon;
+
+    tempLat.push(null);
+    tempLon.push(null);
+
     this.setState({
       number : this.state.number + 1,
-      inputs : temp_inputs,
+      destLat : tempLat,
+      destLon : tempLon,
     });
   }
 
   //Publishes a ros message on the gps topic with destination coordinates
   handleSubmit() {
-    console.log('Submit Latitude: '+this.state.inputs[0].latitude)
+    //Create message
     let message = new ROSLIB.Message({
-      destLat: this.state.inputs[0].latitude,
-      destLon: this.state.inputs[0].longitude
+      destLat: this.state.destLat,
+      destLon: this.state.destLon,
     })
 
     this.props.topic.publish(message);
   }
 
+  //Sets value for the corresponding latitude textbox
   handleLatChange(event, index){
-    let temp_inputs = this.state.inputs;
-    temp_inputs[index].latitude = event.target.value;
+    let tempLat = this.state.destLat;
+    tempLat[index] = event.target.value;
     this.setState({
-      inputs : temp_inputs
+      destLat : tempLat
     });
   }
 
+  //Sets value for the corresponding longitude textbox
   handleLonChange(event, index) {
-    let temp_inputs = this.state.inputs;
-    temp_inputs[index].longitude = event.target.value;
+    let tempLon = this.state.destLon;
+    tempLon[index] = event.target.value;
     this.setState({
-      inputs : temp_inputs
+      destLon : tempLon
     });
   }
 
+  //Sets up and returns one set of latitude and longitude input fields
   renderFields(index) {
     let latitude = '';
     let longitude = '';
-    if(this.state.inputs[index].latitude)
-      latitude = this.state.inputs[index].latitude;
-    if(this.state.inputs[index].longitude)
-      latitude = this.state.inputs[index].longitude;
+
+    //If input is not null set the text
+    if(this.state.destLat[index])
+      latitude = this.state.destLat[index];
+    if(this.state.destLon[index])
+      longitude = this.state.destLon[index];
 
 
     return (
@@ -75,6 +90,7 @@ class GPS_Input extends React.Component {
     );
   }
 
+  //Returns an array of field sets based on the number of sets specified
   renderInputs() {
     let array = [];
 
@@ -91,10 +107,9 @@ class GPS_Input extends React.Component {
     return (
       React.createElement('div', null, [
         React.createElement('h2', {key:'GPS_Input'}, "GPS Input"),
-        React.createElement('div', {/*onSubmit: (e) => this.handleSubmit(e)*/}, [
+        React.createElement('div', null, [
           input_elements,
           React.createElement('button', {type:'button', onClick:() => this.addInput()}, '+'),
-          //React.createElement('input', {type:'submit', value:'Send'})
           React.createElement('button', {type:'button', onClick:() => this.handleSubmit()}, 'Send')
         ]),
       ])
