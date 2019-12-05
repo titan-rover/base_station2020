@@ -22,17 +22,28 @@
      roslaunch simple_test ros9-15run.launch
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 UI Window responsible for:
+## UI Window responsible for:
 - Displaying various data received over ROS
 - Input to sends GPS destination coordinates over ROS, where destLat and destLon are both string[] types
 
-Requirements:
-- Node
-- Express
+## Editting and Testing:
+**Requirements:**
+- Nodejs installed (nvm recommended - [Link](https://github.com/nvm-sh/nvm#installation-and-update))
+**Setup**
+- Install dependencies `npm install`
+- Start the app `npm start`
+- Verify it's working, `Ctrl C` to stop hosting the app
 
-How to run:
-- run "npm run build" to create a production build
-- run "node Launch.js"
-- open web browser to localhost:9000
+Any time you need to edit and test now just run `npm start`, any changes to the src files will automatically reload the app while it's being hosted
 
-Note:
-- Base Station doesn't need the source code, only the build folder and Launch.js file
+## Deploying the App to the Base Station
+**Build the App**
+- Run `npm run build` to create the build production of the app, stored in the build directory
+- Copy the build directory and the Launch.js file to the Base Station
+**Basestation Setup**
+- Has node installed
+- In the app directory make sure express is installed `npm install express`
+- Run `node Launch.js`
+- Open browser to localhost:9000
+
+You can edit the port within the Launch.js file
