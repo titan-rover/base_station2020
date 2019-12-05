@@ -40,6 +40,7 @@ Any time you need to edit and test now just run `npm start`, any changes to the 
 **Build the App**
 - Run `npm run build` to create the build production of the app, stored in the build directory
 - Copy the build directory and the Launch.js file to the Base Station
+
 **Basestation Setup**
 - Has node installed
 - In the app directory make sure express is installed `npm install express`
