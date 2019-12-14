@@ -52,12 +52,16 @@ private slots:
     void popupButtonClicked();
     void pauseButtonClicked();
     void qualityButtonClicked();
+    void start_rotating_clockwise();
+    void start_rotating_counterclockwise();
 
 private:
     Ui::oneCamera *ui;
     QPixmap myPixmap;
     int m_id;
     QString m_currentCamera;
+    QPainter* painter;
+    int rotate_degree;
 };
 
 #endif // ONECAMERA_H
