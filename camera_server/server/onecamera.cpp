@@ -3,11 +3,14 @@
 
 #include <QPushButton>
 #include <QDebug>
+#include <QPainter>
 
 
 oneCamera::oneCamera(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::oneCamera)
+    ui(new Ui::oneCamera),
+    painter(new QPainter),
+    rotate_degree(0)
 {
     ui->setupUi(this);
 
@@ -25,6 +28,12 @@ oneCamera::oneCamera(QWidget *parent) :
 
     QPushButton* pauseButton = ui->pauseButton;
     QObject::connect(pauseButton, &QPushButton::clicked, this, &oneCamera::pauseButtonClicked);
+
+    QPushButton* clockwiseButton = ui->clockwiseButton;
+    QObject::connect(clockwiseButton, &QPushButton::clicked, this, &oneCamera::start_rotating_clockwise);
+
+    QPushButton* counterClockwiseButton = ui->counterClockwiseButton;
+    QObject::connect(counterClockwiseButton, &QPushButton::clicked, this, &oneCamera::start_rotating_counterclockwise);
 }
 
 oneCamera::~oneCamera()
@@ -71,10 +80,31 @@ void oneCamera::drawFrame(cv::Mat frame){
     // Create QImage with same dimensions as input Mat
     QImage img(frame.data, frame.cols, frame.rows, frame.step, QImage::Format_RGB888);
     img.setColorTable(colorTable);
+    QPixmap the_camera_feed(QPixmap::fromImage(img.scaled(ui->cameraPic->size())));
+    QPixmap rotatePixmap(ui->cameraPic->size());
+    rotatePixmap.fill(Qt::transparent);
 
+    QTransform transform;
+    transform.translate(rotatePixmap.width() / 2, rotatePixmap.height() / 2);
+    transform.rotate(rotate_degree);
+    transform.translate(-rotatePixmap.width() / 2, -rotatePixmap.height() / 2);
+
+    painter->begin(&rotatePixmap);
+    painter->setRenderHints(QPainter::Antialiasing|QPainter::SmoothPixmapTransform, true);
+    painter->setTransform(transform);
+    painter->drawPixmap(0, 0, the_camera_feed);
+    painter->end();
     ui->cameraPic->setPixmap(
-                QPixmap::fromImage(img).scaled(
+                rotatePixmap.scaled(
                     ui->cameraPic->size(),
                     Qt::KeepAspectRatio,
                     Qt::SmoothTransformation));
+}
+
+
+void oneCamera::start_rotating_clockwise() {
+    rotate_degree+=45;
+}
+void oneCamera::start_rotating_counterclockwise() {
+    rotate_degree-=45;
 }
