@@ -27,7 +27,7 @@ public:
     QLabel *cameraPic;
     QVBoxLayout *verticalLayout;
     QPushButton *clockwiseButton;
-    QPushButton *counterClockwiseButton;
+    QPushButton *counterclockwiseButton;
     QPushButton *popNewScreenButton;
     QPushButton *pauseButton;
     QRadioButton *highQualityButton;
@@ -143,10 +143,10 @@ public:
 
         verticalLayout->addWidget(clockwiseButton);
 
-        counterClockwiseButton = new QPushButton(oneCamera);
-        counterClockwiseButton->setObjectName(QString::fromUtf8("counterClockwiseButton"));
+        counterclockwiseButton = new QPushButton(oneCamera);
+        counterclockwiseButton->setObjectName(QString::fromUtf8("counterclockwiseButton"));
 
-        verticalLayout->addWidget(counterClockwiseButton);
+        verticalLayout->addWidget(counterclockwiseButton);
 
         popNewScreenButton = new QPushButton(oneCamera);
         popNewScreenButton->setObjectName(QString::fromUtf8("popNewScreenButton"));
@@ -192,7 +192,7 @@ public:
         oneCamera->setWindowTitle(QApplication::translate("oneCamera", "Form", nullptr));
         cameraPic->setText(QApplication::translate("oneCamera", "test text", nullptr));
         clockwiseButton->setText(QApplication::translate("oneCamera", "Turn right", nullptr));
-        counterClockwiseButton->setText(QApplication::translate("oneCamera", "Turn left", nullptr));
+        counterclockwiseButton->setText(QApplication::translate("oneCamera", "Turn left", nullptr));
         popNewScreenButton->setText(QApplication::translate("oneCamera", "Pop Up", nullptr));
         pauseButton->setText(QApplication::translate("oneCamera", "Pause", nullptr));
         highQualityButton->setText(QApplication::translate("oneCamera", "High", nullptr));
