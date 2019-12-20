@@ -3,6 +3,8 @@
 #include "global.h"
 #include "tcplistenerthread.h"
 
+#include <QDebug>
+
 #include <vector>
 #include <QJsonArray>
 #include <QJsonObject>
@@ -106,6 +108,8 @@ void MainWindow::buildConfiguration(const QString cameraId, int viewportIndex, i
             .toArray()[quality]
             .toObject();
 
+    qDebug() << deviceQuality["fps"];
+
     ConfigurationPacket confPack = {
         deviceJSON["device"].toString().toStdString(),
         QString(videoListenerThreads->at(viewportIndex)->getPort()).toStdString(),
@@ -114,6 +118,7 @@ void MainWindow::buildConfiguration(const QString cameraId, int viewportIndex, i
         static_cast<u_int16_t>(deviceQuality["resolutionX"].toInt()),
         static_cast<u_int16_t>(deviceQuality["resolutionY"].toInt()),
     };
+    qDebug() << confPack.fps;
 
     emit configurationReady(cameraId, confPack);
 }
