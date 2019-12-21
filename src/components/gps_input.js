@@ -33,6 +33,21 @@ class GPS_Input extends React.Component {
     });
   }
 
+  minusInput = () => {
+    let tempLat = this.state.destLat;
+    let tempLon = this.state.destLon;
+
+    tempLat.push(null);
+    tempLon.push(null);
+
+    this.setState({
+      number : this.state.number === 0 ?
+      this.state.number : this.state.number -1,
+      destLat : tempLat,
+      destLon : tempLon,
+    });
+  }
+
   //Publishes a ros message on the gps topic with destination coordinates
   handleSubmit() {
     //Create message
@@ -110,6 +125,7 @@ class GPS_Input extends React.Component {
         React.createElement('div', null, [
           input_elements,
           React.createElement('button', {type:'button', onClick:() => this.addInput()}, '+'),
+          React.createElement('button', {type:'button', onClick:() => this.minusInput()}, '-'),
           React.createElement('button', {type:'button', onClick:() => this.handleSubmit()}, 'Send')
         ]),
       ])
