@@ -46,7 +46,7 @@ class App extends React.Component {
     };
 
     //setInterval(this.changeState, 1000);
-    
+
     //If ROS starts successfully, register event handlers
     if(this.startRos())
       this.handleRegister();
@@ -80,13 +80,13 @@ class App extends React.Component {
     this.gps_listener = new ROSLIB.Topic({
       ros : this.ros,
       name : '/gnss',
-      messageType : "fake_sensor_test/gps",
+      messageType : "gnss/gps",
     });
 
     this.imu_listener = new ROSLIB.Topic({
       ros : this.ros,
       name : '/imu',
-      messageType : "fake_sensor_test/imu",
+      messageType : "imu/axes",
     });
 
     this.mobility_listener = new ROSLIB.Topic({
@@ -105,7 +105,7 @@ class App extends React.Component {
     this.gps_publisher = new ROSLIB.Topic({
       ros : this.ros,
       name : '/gnss',
-      messageType : "fake_sensor_test/gps",
+      messageType : "gnss/gps",
     });
 
     return true;
