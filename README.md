@@ -21,4 +21,6 @@
      cd /src
      roslaunch simple_test ros9-15run.launch
   
-
+**Device**|**IP**|**Username**|**Password**
+:-----:|:-----:|:-----:|:-----:
+Jetson AGX Xavier|192.168.1.101|rover|nvidia20
