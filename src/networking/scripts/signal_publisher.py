@@ -7,14 +7,13 @@ from networking.msg import signal
 #from multijoy.msg import MultiJoy
 #from sensor_msgs.msg import Joy
 from time import sleep
+
+# Import to use DiscoverMasters service
+from multimaster_msgs_fkie.srv import DiscoverMasters
+
 base_ubiquiti = "192.168.1.200"
 hostName = socket.gethostname()
 print("Host: " + hostName)
-
-
-
-
-
 
 '''
 
@@ -46,6 +45,19 @@ def main():
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     print("sshing into the antenna")
     ssh.connect(base_ubiquiti, username="admin", password="titanrover17")
+    
+    # Wait for the service to be available
+    rospy.wait_for_service('/master_discovery/list_masters')
+
+    # Get a handle to the service for multiple calls
+    srv = rospy.ServiceProxy('/master_discovery/list_masters', DiscoverMasters)
+
+    # Call DiscoverMasters service
+    discovered_masters = srv()
+
+    # Output the number of masters discovered
+    print(len(discovered_masters.masters))        
+    
     while not rospy.is_shutdown():
         now = rospy.get_time()
         #print("shoot da whoop in da loop")
