@@ -1,3 +1,10 @@
+# How to use this src folder
+1. Copy the contents of this folder to your catkin workspace src folder.
+2. Run catkin_make in the catkin workspace root directory.
+    ```console
+    # catkin_make
+    ```
+
 # How to use fake_sensor_test
 
 1. Source your catkin workspace
