@@ -15,7 +15,7 @@
 2. Start ros
     ```console
     # roscore
-    ```f
+    ```
 3. Start a test from the terminal 
     ```console
     # rosrun fake_sensor_test [filename]
