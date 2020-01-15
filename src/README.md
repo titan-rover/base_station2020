@@ -15,11 +15,17 @@
 2. Start ros
     ```console
     # roscore
-    ```
+    ```f
 3. Start a test from the terminal 
     ```console
     # rosrun fake_sensor_test [filename]
     # rosrun fake_sensor_test mobility.py  
+    ```
+4. Useful commands
+    ```console
+    # rosnode info /gnss
+    # rostopic list
+    # rostopic echo /gnss
     ```
 
 # How to start rosbridge
