@@ -12,8 +12,11 @@
     # source [your catkin workspace]/devel/setup.bash
     # source ~/catkin_ws/devel/setup.bash
     ```
-
-2. Start a test from the terminal 
+2. Start ros
+    ```console
+    # roscore
+    ```
+3. Start a test from the terminal 
     ```console
     # rosrun fake_sensor_test [filename]
     # rosrun fake_sensor_test mobility.py  
