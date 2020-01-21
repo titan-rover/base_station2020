@@ -12,18 +12,18 @@
       "quality": [
         {
           "jpgQuality": 5,
-          "fps": 30,
-          "resolutionX": 1280,
-          "resolutionY": 480
-        },
-        {
-          "jpgQuality": 15,
-          "fps": 30,
+          "fps": 10,
           "resolutionX": 1280,
           "resolutionY": 720
         },
         {
-          "jpgQuality": 30,
+          "jpgQuality": 15,
+          "fps": 20,
+          "resolutionX": 1280,
+          "resolutionY": 720
+        },
+        {
+          "jpgQuality": 50,
           "fps": 30,
           "resolutionX": 1280,
           "resolutionY": 720
@@ -31,22 +31,22 @@
       ]
     },
     "camera2": {
-      "device": "1",
+      "device": "2",
       "quality": [
         {
           "jpgQuality": 5,
-          "fps": 30,
+          "fps": 10,
           "resolutionX": 1280,
           "resolutionY": 720
         },
         {
           "jpgQuality": 15,
-          "fps": 30,
+          "fps": 20,
           "resolutionX": 1280,
           "resolutionY": 720
         },
         {
-          "jpgQuality": 30,
+          "jpgQuality": 35,
           "fps": 30,
           "resolutionX": 1280,
           "resolutionY": 720

@@ -1,2 +1,0 @@
-ignore_hosts: ['*']
-ignore_topics: ['/test_true']
