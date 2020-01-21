@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'onecamera.ui'
 **
-** Created by: Qt User Interface Compiler version 5.12.5
+** Created by: Qt User Interface Compiler version 5.12.6
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -26,6 +26,8 @@ public:
     QHBoxLayout *horizontalLayout;
     QLabel *cameraPic;
     QVBoxLayout *verticalLayout;
+    QPushButton *clockwiseButton;
+    QPushButton *counterClockwiseButton;
     QPushButton *popNewScreenButton;
     QPushButton *pauseButton;
     QRadioButton *highQualityButton;
@@ -136,6 +138,16 @@ public:
 
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        clockwiseButton = new QPushButton(oneCamera);
+        clockwiseButton->setObjectName(QString::fromUtf8("clockwiseButton"));
+
+        verticalLayout->addWidget(clockwiseButton);
+
+        counterClockwiseButton = new QPushButton(oneCamera);
+        counterClockwiseButton->setObjectName(QString::fromUtf8("counterClockwiseButton"));
+
+        verticalLayout->addWidget(counterClockwiseButton);
+
         popNewScreenButton = new QPushButton(oneCamera);
         popNewScreenButton->setObjectName(QString::fromUtf8("popNewScreenButton"));
 
@@ -179,6 +191,8 @@ public:
     {
         oneCamera->setWindowTitle(QApplication::translate("oneCamera", "Form", nullptr));
         cameraPic->setText(QApplication::translate("oneCamera", "test text", nullptr));
+        clockwiseButton->setText(QApplication::translate("oneCamera", "Turn right", nullptr));
+        counterClockwiseButton->setText(QApplication::translate("oneCamera", "Turn left", nullptr));
         popNewScreenButton->setText(QApplication::translate("oneCamera", "Pop Up", nullptr));
         pauseButton->setText(QApplication::translate("oneCamera", "Pause", nullptr));
         highQualityButton->setText(QApplication::translate("oneCamera", "High", nullptr));

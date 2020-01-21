@@ -1,8 +1,0 @@
-<launch>
-	<node name="talker" pkg="simple_test" 
-		type="talker" output="screen"/>
-	<node name="listener" pkg="simple_test" 
-		type="listener" output="screen"/>
-	<node name="rosGui" pkg="simple_test" 
-		type="rosGui" output="screen"/>
-</launch>

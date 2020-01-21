@@ -25,7 +25,7 @@ void VideoListenerThread::run()
 
     while (true)
     {
-        std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
+//        std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
         frameBytes = 0;
         // the do-while below is in charge of finding a packet that is a single int
         // We then get that int, which presents the number of packets needed to get
@@ -36,7 +36,7 @@ void VideoListenerThread::run()
         do
         {
             recv_bytes = recvfrom(udpSock, buffer, buflen, 0, nullptr, nullptr);
-            bytesPerSecond += recv_bytes;
+//            bytesPerSecond += recv_bytes;
         } while (recv_bytes > sizeof(int));
 
         // treat tempBuf as an int array and get the first element
@@ -55,25 +55,25 @@ void VideoListenerThread::run()
 
         std::vector<unsigned char> rawData(buffer, buffer + numBytes);
         cv::Mat frame = cv::imdecode(rawData, cv::IMREAD_COLOR);
-        if (frame.size().width == 0)
-        {
-            std::cerr << "decode failure" << std::endl;
-            continue;
-        }
+//        if (frame.size().width == 0)
+//        {
+//            std::cerr << "decode failure" << std::endl;
+//            continue;
+//        }
 
 
         // Draws the frame on screen. Will be replaced with UI code
 //        qDebug() << "frame finished";
         emit frameCompleted(frame);
 
-        std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
-        duration += std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
-        if (duration >= 1000)
-        {
-            // std::cout << "bytes per second: " << (double)bytesPerSecond / 1000.0 / 1000.0 << "mB/s" << std::endl;
-            duration = 0;
-            bytesPerSecond = 0;
-        }
+//        std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+//        duration += std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+//        if (duration >= 1000)
+//        {
+//            // std::cout << "bytes per second: " << (double)bytesPerSecond / 1000.0 / 1000.0 << "mB/s" << std::endl;
+//            duration = 0;
+//            bytesPerSecond = 0;
+//        }
     }
 
     delete[] buffer;

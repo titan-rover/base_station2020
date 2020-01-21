@@ -8,10 +8,10 @@ project(fake_sensor_test)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  bno055
-  finalimu
-  gnss
-  roscpp
+#  bno055
+#  finalimu
+#  gnss
+#  roscpp
   rospy
   std_msgs
   message_generation

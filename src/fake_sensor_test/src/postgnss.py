@@ -15,7 +15,11 @@ g = gps()
 #s = String()
 
 g.baseLat, g.baseLon = '33.881832' , '-117.882965'
-g.destLat, g.destLon = '33.881650' , '-117.883149'
+g.destLat.append('33.881650')
+g.destLat.append('33.881660')
+g.destLon.append('-117.883149')
+g.destLon.append('-117.883150')
+#g.destLat, g.destLon = '33.881650' , '-117.883149'
 #baseLat, baseLon = '33.881832' , '-117.882965'
 #destLat, destLon = '33.881650' , '-117.883149'
 
