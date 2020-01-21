@@ -1,0 +1,52 @@
+#include "ros/ros.h"
+#include "std_msgs/String.h"
+#include "std_msgs/Int8.h"
+#include <QtCore>
+#include <QtGui>
+#include <QApplication>
+#include <QLabel>
+#include <QWidget>
+#include <QObject>
+#include <QHBoxLayout>
+#include <QObject>
+#include <QTimer>
+
+
+
+//QLabel hello("ADF");
+QString placeholder = "placeholder";
+
+static void updateMsg(std_msgs::String newString)
+{
+  //hello.setText(placeholder);
+  //placeholder = QString::fromStdString(newString);
+}
+
+int main(int argc, char **argv)
+{
+	QApplication app(argc, argv);
+	QWidget *window = new QWidget;
+	
+	window->setWindowTitle("Hiya");
+	
+	QLabel *hello = new QLabel("");
+	hello->setText(placeholder);
+	//hello.show();
+
+	//QObject::connect(placeholder, SIGNAL(valuechanged(int)), hello, SLOT(setValue(int)));
+	
+	QHBoxLayout *layout = new QHBoxLayout;
+	layout->addWidget(hello);
+	window->setLayout(layout);
+	window->showNormal();
+
+	//QTimer *timer = new QTimer(this);
+	//connect(timer, SIGNAL(timeout()), this, SLOT(updateMsg(placeholder));
+	
+	std_msgs::Int8 intE;
+	intE.data = 16;
+	//updateMsg(intE);
+	//hello.setText(placeholder);
+	
+	return app.exec();
+}

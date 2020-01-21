@@ -511,20 +511,6 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QPushButton" name="clockwiseButton">
-       <property name="text">
-        <string>Turn right</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="counterClockwiseButton">
-       <property name="text">
-        <string>Turn left</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="popNewScreenButton">
        <property name="text">
         <string>Pop Up</string>
