@@ -193,16 +193,16 @@ class App extends Component {
     try {
       this.antenna_listener = new ROSLIB.Topic({
         ros: this.ros,
-        name: "/antenna",
-        messageType: "fake_sensor_test/antenna",
+        name: "/rover_db",
+        messageType: "telemetry/signal",
         throttle_rate: this.THROTTLE_RATE,
         queue_length: this.QUEUE_LENGTH
       });
 
       this.gps_listener = new ROSLIB.Topic({
         ros: this.ros,
-        name: "/gnss",
-        messageType: "fake_sensor_test/gps",
+        name: "/rover_gnss",
+        messageType: "telemetry/gps",
         throttle_rate: this.THROTTLE_RATE,
         queue_length: this.QUEUE_LENGTH
       });
@@ -212,7 +212,7 @@ class App extends Component {
       this.imu_listener = new ROSLIB.Topic({
         ros: this.ros,
         name: "/imu",
-        messageType: "fake_sensor_test/imu",
+        messageType: "telemetry/fimu",
         throttle_rate: this.THROTTLE_RATE,
         queue_length: this.QUEUE_LENGTH
       });
@@ -220,15 +220,15 @@ class App extends Component {
       this.mobility_listener = new ROSLIB.Topic({
         ros: this.ros,
         name: "/mobility",
-        messageType: "fake_sensor_test/mobility",
+        messageType: "mobility/mtr_draw",
         throttle_rate: this.THROTTLE_RATE,
         queue_length: this.QUEUE_LENGTH
       });
 
       this.ultrasonic_listener = new ROSLIB.Topic({
         ros: this.ros,
-        name: "/ultrasonic",
-        messageType: "fake_sensor_test/ultrasonic",
+        name: "/range",
+        messageType: "sensor_msg/Range",
         throttle_rate: this.THROTTLE_RATE,
         queue_length: this.QUEUE_LENGTH
       });
