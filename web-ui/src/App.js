@@ -177,8 +177,8 @@ class App extends Component {
     try {
       this.gps_publisher = new ROSLIB.Topic({
         ros: this.ros,
-        name: "/gnss",
-        messageType: "gnss/gps"
+        name: "/gps_list",
+        messageType: "mobility/points"
       });
     } catch (e) {
       //Fail to create ROS object
