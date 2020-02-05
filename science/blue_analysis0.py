@@ -28,7 +28,7 @@ for c in cnts:
     break
 
 cv2.imshow('Cropped #0',ROI)
-cv2.imwrite('cropped0.png',ROI)
+cv2.imwrite('crop_spec_sample_0.png',ROI)
 cv2.waitKey()
 crop_spec_sample = Image.open("crop_spec_sample_0.png")
 img = crop_spec_sample.load()
