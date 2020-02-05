@@ -10,9 +10,9 @@ from PIL import Image
 
 img_file = Image.open("D0.jpg")
 
-color_region = img_file.crop((1350, 300, 550+1200, 400+300))
-color_region.save("spec_same_0.png")
-image = cv2.imread("spec_same_0.png")
+spec_sample = img_file.crop((1350, 300, 550+1200, 400+300))
+spec_sample.save("spec_sample_0.png")
+image = cv2.imread("spec_sample_0.png")
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU + cv2.THRESH_BINARY)[1]
 
