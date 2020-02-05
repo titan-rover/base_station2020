@@ -10,9 +10,9 @@ from PIL import Image
 
 img_file = Image.open("D7.jpg")
 
-color_region = img_file.crop((1350, 300, 550+1200, 400+300))
-color_region.save("color_region7.jpg")
-image = cv2.imread("color_region7.jpg")
+spec_sample = img_file.crop((1350, 300, 550+1200, 400+300))
+spec_sample.save("spec_sample_7.png")
+image = cv2.imread("spec_sample_7.png")
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU + cv2.THRESH_BINARY)[1]
 
@@ -28,12 +28,12 @@ for c in cnts:
     break
 
 cv2.imshow('Cropped #7',ROI)
-cv2.imwrite('cropped7.jpg',ROI)
+cv2.imwrite('crop_spec_sample_7.png',ROI)
 cv2.waitKey()
-img_for_graph = Image.open("cropped7.jpg")
-img = img_for_graph.load()
+crop_spec_sample = Image.open("crop_spec_sample_7.png")
+img = crop_spec_sample.load()
 
-[xs, ys] = img_for_graph.size
+[xs, ys] = crop_spec_sample.size
 max_intensity = 100
 hues = {}import numpy as np
 import mpl_toolkits.mplot3d.axes3d as p3
