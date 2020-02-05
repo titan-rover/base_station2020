@@ -30,7 +30,7 @@ for c in cnts:
 cv2.imshow('Cropped #5',ROI)
 cv2.imwrite('crop_spec_sample_5',ROI)
 cv2.waitKey()
-crop_spec_sample = Image.open("crop_spec_sample_5")
+crop_spec_sample = Image.open("crop_spec_sample_5.png")
 img = crop_spec_sample.load()
 
 [xs, ys] = crop_spec_sample.size
