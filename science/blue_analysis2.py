@@ -33,7 +33,7 @@ cv2.waitKey()
 crop_spec_sample = Image.open("crop_spec_sample_2.png")
 img = crop_spec_sample.load()
 
-[xs, ys] = img_for_graph.size
+[xs, ys] = crop_spec_sample.size
 max_intensity = 100
 hues = {}
 
