@@ -11,8 +11,8 @@ from PIL import Image
 img_file = Image.open("D0.jpg")
 
 color_region = img_file.crop((1350, 300, 550+1200, 400+300))
-color_region.save("color_region0.jpg")
-image = cv2.imread("color_region0.jpg")
+color_region.save("spec_same_0.png")
+image = cv2.imread("spec_same_0.png")
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU + cv2.THRESH_BINARY)[1]
 
@@ -28,12 +28,12 @@ for c in cnts:
     break
 
 cv2.imshow('Cropped #0',ROI)
-cv2.imwrite('cropped0.jpg',ROI)
+cv2.imwrite('cropped0.png',ROI)
 cv2.waitKey()
-img_for_graph = Image.open("cropped0.jpg")
-img = img_for_graph.load()
+crop_spec_sample = Image.open("crop_spec_sample_0.png")
+img = crop_spec_sample.load()
 
-[xs, ys] = img_for_graph.size
+[xs, ys] = crop_spec_sample.size
 max_intensity = 100
 hues = {}
 
