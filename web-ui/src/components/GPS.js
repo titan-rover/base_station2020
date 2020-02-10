@@ -239,7 +239,6 @@ class GPS extends Component {
   }
 
   submitGPSInputs() {
-    alert("Done!");
   }
 
   render() {
