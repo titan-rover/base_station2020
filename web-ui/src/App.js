@@ -34,8 +34,8 @@ class App extends Component {
 
     this.state = {
       imu: {
-        rotation: { x: 0, y: 0, z: 0 },
-        position: { x: -40, y: -25, z: -35 },
+        rotation: { x: -Math.PI/2, y: 0, z: Math.PI/2 },
+        position: { x: 0, y: -40, z: 40 },
         heading: null
       },
       gps: {

@@ -8,7 +8,7 @@ class IMU extends Component {
     this.state = {
       // position: this.props.position,
       // rotation: this.props.rotation
-      position: { x: 0, y: -40, z: 40 },
+      // position: { x: 0, y: -40, z: 40 },
       // rotation: { x: -Math.PI/2, y: 0, z: Math.PI/2 }
     };
 
@@ -36,7 +36,7 @@ class IMU extends Component {
           height={500}
           texPath=""
           src="./rover-model-v2.obj"
-          position={this.state.position}
+          position={this.props.position}
           rotation={this.props.rotation}
         />
       </div>
