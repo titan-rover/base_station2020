@@ -50,7 +50,7 @@ class GPS extends Component {
   };
 
   removeAutonomousCoordinates = () => {
-    const removeAmount = (this.state.gpsArraySize == 1) ? 0 : 1;
+    const removeAmount = (this.state.gpsArraySize === 1) ? 0 : 1;
     const newArraySize = this.state.gpsArraySize - removeAmount;
     this.setState({
       autonomousCoordinates: this.state.autonomousCoordinates.slice(0, newArraySize),
