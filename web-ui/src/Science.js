@@ -12,47 +12,43 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // Custom components
-import IMU from "./components/IMU";
 import MapTile from "./components/MapTile";
 import Compass from "./components/Compass";
-import UltraSonicSensor from "./components/UltrasonicSensor";
-import GPS from "./components/GPS";
-import AntennaSignal from "./components/AntennaSignal";
-import MobilityCurrentDraw from "./components/MobilityCurrentDraw";
+import UVSensor from "./components/UVSensor";
+import TemperatureSensor from "./components/TemperatureSensor";
+import HumiditySensor from "./components/HumiditySensor";
 import ROSLIB from "roslib";
+import CO2Sensor from "./components/CO2Sensor";
 
 class Science extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      imu: {
-        rotation: null,
-        heading: null
-      },
-      gps: {
-        currentPosition: [null, null]
-      },
-      antenna: {
-        decibals: null
-      },
-      ultrasonic: {
-        distance: null
+      temperature: {
+        ambientC: Array(20).fill(null),
+        ambientF: Array(20).fill(null),
+        objectC: Array(20).fill(null),
+        objectF: Array(20).fill(null)
       },
 
-      roboclaw: {
-        a: {
-          amps: null
-        },
-        b: {
-          amps: null
-        }
+      co2: {ppm: null},
+
+      uv: {
+        uv_visible: null,
+        uv_infared: null,
+        uv_index: null
+      },
+
+      humidity: {
+        humidity_temperature: null,
+        humidity: null
       }
     };
 
     this.connectRosBridge("ws://localhost:9090");
     this.createListeners();
-    this.createPublishers();
+    //this.createPublishers();
     this.registerCallbacks();
   }
 
@@ -75,97 +71,60 @@ class Science extends Component {
     });
 
     // Register listener callbacks
-    if (this.antenna_listener) {
-      this.antenna_listener.subscribe(m => {
+    if (this.sensor_listener) {
+      this.sensor_listener.subscribe(m => {
+        const hist0 = this.temperature.ambientC.slice(1);
+        const hist1 = this.temperature.ambientF.slice(1);
+        const hist2 = this.temperature.objectC.slice(1);
+        const hist3 = this.temperature.objectF.slice(1);
         this.setState({
-          decibels: m.signal_strength
-        });
-      });
-    }
+          temperature: {
+            ambientC: hist0.concat([m.AmbientC]),
+            ambientF: hist1.concat([m.AmbientF]),
+            objectC: hist2.concat([m.ObjectC]),
+            objectF: hist3.concat([m.ObjectF])
+          },
+          co2: {ppm: m.ppm},
 
-    if (this.gps_listener) {
-      this.gps_listener.subscribe(m => {
-        this.setState({
-          latitude: m.roverLat,
-          longitude: m.roverLon
-        });
-      });
-    }
+          uv: {
+            uv_visible: m.uv_visible,
+            uv_infared: m.uv_infared,
+            uv_index: m.uv_index
+          },
 
-    if (this.imu_listener) {
-      this.imu_listener.subscribe(m => {
-        this.setState({
-          yaw: m.yaw,
-          pitch: m.pitch,
-          roll: m.roll
-        });
-      });
-    }
-
-    if (this.mobility_listener) {
-      this.mobility_listener.subscribe(m => {
-        this.setState({
-          amperage: m.current_draw
-        });
-      });
-    }
-
-    if (this.ultrasonic_listener) {
-      this.ultrasonic_listener.subscribe(m => {
-        this.setState({
-          distance: m.max_distance
+          humidity: {
+            humidity_temperature: m.humidity_temperature,
+            humidity: m.humidity
+          }
         });
       });
     }
   }
 
-  createPublishers() {
-    try {
-      this.gps_publisher = new ROSLIB.Topic({
-        ros: this.ros,
-        name: "/gnss",
-        messageType: "gnss/gps"
-      });
-    } catch (e) {
-      //Fail to create ROS object
-      this.setState({
-        status: "Error"
-      });
-      console.log("Error: Failed to create ros publisher");
-    }
-  }
+  // createPublishers() {
+  //   try {
+  //     this.gps_publisher = new ROSLIB.Topic({
+  //       ros: this.ros,
+  //       name: "/gnss",
+  //       messageType: "gnss/gps"
+  //     });
+  //   } catch (e) {
+  //     //Fail to create ROS object
+  //     this.setState({
+  //       status: "Error"
+  //     });
+  //     console.log("Error: Failed to create ros publisher");
+  //   }
+  // }
 
   createListeners() {
     try {
-      this.antenna_listener = new ROSLIB.Topic({
+      this.sensor_listener = new ROSLIB.Topic({
         ros: this.ros,
-        name: "/antenna",
-        messageType: "fake_sensor_test/antenna"
+        name: "/sensors",
+        messageType: "science_sensors/sci_msgs"
       });
-
-      this.gps_listener = new ROSLIB.Topic({
-        ros: this.ros,
-        name: "/gnss",
-        messageType: "gnss/gps"
-      });
-
-      this.imu_listener = new ROSLIB.Topic({
-        ros: this.ros,
-        name: "/imu",
-        messageType: "imu/axes"
-      });
-
-      this.mobility_listener = new ROSLIB.Topic({
-        ros: this.ros,
-        name: "/mobility",
-        messageType: "fake_sensor_test/mobility"
-      });
-
-      this.ultrasonic_listener = new ROSLIB.Topic({
-        ros: this.ros,
-        name: "/ultrasonic",
-        messageType: "fake_sensor_test/ultrasonic"
-      });
+      
     } catch (e) {
       //Fail to create ROS object
       this.setState({
@@ -195,16 +154,12 @@ class Science extends Component {
       <Container fluid={true} className="pt-2">
         <Row>
           <Col>
-            <IMU rotation={this.state.imu.rotation} />
+            <TemperatureSensor/>
+            <HumiditySensor/>
           </Col>
           <Col>
-            <MapTile currentPosition={this.state.gps.currentPosition} />
-          </Col>
-          <Col>
-            <Compass heading={this.state.imu.heading} />
-          </Col>
-          <Col>
-            <UltraSonicSensor distance={this.state.ultrasonic.distance} />
+            <CO2Sensor/>
+            <UVSensor/>
           </Col>
         </Row>
         <ToastContainer autoClose={3000} />
