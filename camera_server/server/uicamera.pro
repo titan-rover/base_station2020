@@ -3,7 +3,10 @@ QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
-
+QMAKE_CXXFLAGS += -pthread -lssl -lcrypto -lboost_system
+INCLUDEPATH += "/usr/include/x86_64-linux-gnu"
+LIBS += -L"/usr/lib/"
+LIBS += -lpthread -lssl -lcrypto -lboost_system
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -17,6 +20,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     global.cpp \
+    imu.cpp \
+    imuthread.cpp \
     main.cpp \
     mainwindow.cpp \
     onecamera.cpp \
@@ -28,6 +33,8 @@ SOURCES += \
 
 HEADERS += \
     global.h \
+    imu.h \
+    imuthread.h \
     json.hpp \
     ../packetdefinitions.hpp \
     ../socketfunctions.hpp \

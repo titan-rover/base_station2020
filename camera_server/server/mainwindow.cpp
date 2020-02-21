@@ -1,9 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "global.h"
+#include "imu.h"
 #include "tcplistenerthread.h"
-
-#include <QDebug>
+#include "videolistenerthread.h"
+#include "imuthread.h"
+#include "../rosbridgecpp-master/rosbridge_ws_client.hpp"
 
 #include <vector>
 #include <QJsonArray>
@@ -11,7 +13,18 @@
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QPushButton>
-#include "videolistenerthread.h"
+#include <QDebug>
+
+RosbridgeWsClient *rbc;
+ImuThread* imuListener = new ImuThread();
+
+// Function that handles each message received by the Imu subscriber
+// Not familiar with the Parameter's data types
+void subscriberCallback(std::shared_ptr<WsClient::Connection> /*connection*/, std::shared_ptr<WsClient::InMessage> in_message)
+{
+    Imu m(in_message->string());
+    imuListener->getImuData(m);
+}
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -36,16 +49,31 @@ MainWindow::MainWindow(QWidget *parent)
     };
 
     for(int i = 0; i < 4; i++) {
-        VideoListenerThread *videoListener = new VideoListenerThread();
-        videoListener->setPort(23456+i);
-        videoListener->setId(i);
-        videoListener->start();
-        videoListenerThreads->push_back(videoListener);
-        cameras->at(i)->setViewIndex(i);
-        QObject::connect(cameras->at(i), &oneCamera::requestPopup, this, &MainWindow::createPopupWindow);
-        QObject::connect(cameras->at(i), &oneCamera::qualityChanged, this, &MainWindow::getConfiguration);
-        QObject::connect(cameras->at(i), &oneCamera::requestPause, tcpListener, &TcpListenerThread::sendPause);
-        QObject::connect(videoListener, &VideoListenerThread::frameCompleted, cameras->at(i), &oneCamera::drawFrame);
+        if (i == 0) {
+            rbc = new RosbridgeWsClient("192.168.1.100:9090");
+            // Creates Advertiser sets up the topic and message type, might be optional since this with be created by the rover's scripts
+            //rbc.addClient("topic_advertiser");
+            //rbc.advertise("topic_advertiser", "/imu", "sensor_msgs/Imu");
+            // Creates Subcriber Client, (name)
+            rbc->addClient("topic_subscriber");
+            // Create subscriber event for (subscriber_client, topic, and event handler)
+            rbc->subscribe("topic_subscriber", "/imu", subscriberCallback);
+//            PaintingThread *paintingListener = new PaintingThread();
+            imuListener->start();
+//            paintingListener->start();
+            QObject::connect(imuListener, &ImuThread::sendImuData, cameras->at(i), &oneCamera::imuDataReceive);
+//            QObject::connect(paintingListener, &PaintingThread::callPainting, cameras->at(i), &oneCamera::startPainting);
+        }
+            VideoListenerThread *videoListener = new VideoListenerThread();
+            videoListener->setPort(23456+i);
+            videoListener->setId(i);
+            videoListener->start();
+            videoListenerThreads->push_back(videoListener);
+            cameras->at(i)->setViewIndex(i);
+            QObject::connect(cameras->at(i), &oneCamera::requestPopup, this, &MainWindow::createPopupWindow);
+            QObject::connect(cameras->at(i), &oneCamera::qualityChanged, this, &MainWindow::getConfiguration);
+            QObject::connect(cameras->at(i), &oneCamera::requestPause, tcpListener, &TcpListenerThread::sendPause);
+            QObject::connect(videoListener, &VideoListenerThread::frameCompleted, cameras->at(i), &oneCamera::drawFrame);
     }
 
     QComboBox* singleCameraComboBox = ui->singleCameraCB;
@@ -108,8 +136,6 @@ void MainWindow::buildConfiguration(const QString cameraId, int viewportIndex, i
             .toArray()[quality]
             .toObject();
 
-    qDebug() << deviceQuality["fps"];
-
     ConfigurationPacket confPack = {
         deviceJSON["device"].toString().toStdString(),
         QString(videoListenerThreads->at(viewportIndex)->getPort()).toStdString(),
@@ -118,7 +144,6 @@ void MainWindow::buildConfiguration(const QString cameraId, int viewportIndex, i
         static_cast<u_int16_t>(deviceQuality["resolutionX"].toInt()),
         static_cast<u_int16_t>(deviceQuality["resolutionY"].toInt()),
     };
-    qDebug() << confPack.fps;
 
     emit configurationReady(cameraId, confPack);
 }
@@ -139,5 +164,7 @@ void MainWindow::removeDevice(QString cameraId, int fd) {
 
 MainWindow::~MainWindow()
 {
+    rbc->removeClient("topic_advertiser");
+    rbc->removeClient("topic_subscriber");
     delete ui;
 }
