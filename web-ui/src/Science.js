@@ -46,7 +46,7 @@ class Science extends Component {
       }
     };
 
-    this.connectRosBridge("ws://localhost:9090");
+    this.connectRosBridge("ws://192.168.1.103:9090");
     this.createListeners();
     //this.createPublishers();
     this.registerCallbacks();
@@ -73,23 +73,24 @@ class Science extends Component {
     // Register listener callbacks
     if (this.sensor_listener) {
       this.sensor_listener.subscribe(m => {
-        const hist0 = this.temperature.ambientC.slice(1);
-        const hist1 = this.temperature.ambientF.slice(1);
-        const hist2 = this.temperature.objectC.slice(1);
-        const hist3 = this.temperature.objectF.slice(1);
+          const hist0 = this.state.temperature.ambientC.slice(1);
+          const hist1 = this.state.temperature.ambientF.slice(1);
+          const hist2 = this.state.temperature.objectC.slice(1);
+          const hist3 = this.state.temperature.objectF.slice(1);
         this.setState({
           temperature: {
-            ambientC: hist0.concat([m.AmbientC]),
-            ambientF: hist1.concat([m.AmbientF]),
-            objectC: hist2.concat([m.ObjectC]),
-            objectF: hist3.concat([m.ObjectF])
+             ambientC: hist0.concat([m.ambientC]),
+             ambientF: hist1.concat([m.ambientF]),
+             objectC: hist2.concat([m.objectC]),
+             objectF: hist3.concat([m.objectF])
           },
-          co2: {ppm: m.ppm},
+          co2: {ppm: m.co2_ppm},
 
           uv: {
-            uv_visible: m.uv_visible,
-            uv_infared: m.uv_infared,
-            uv_index: m.uv_index
+            uv_intensity: m.uv_intensity
+            //uv_visible: m.uv_visible,
+            //uv_infared: m.uv_infared,
+            //uv_index: m.uv_index
           },
 
           humidity: {
@@ -150,16 +151,21 @@ class Science extends Component {
   }
 
   render() {
+    const ambientC = this.state.temperature.ambientC[0];
+    const ppm = this.state.co2.ppm;
+    const uv_intensity = this.state.uv.uv_intensity;
+    const humidity = this.state.humidity.humidity;
+    const humidity_temperature = this.state.humidity.humidity_temperature;
     return (
       <Container fluid={true} className="pt-2">
         <Row>
           <Col>
-            <TemperatureSensor/>
-            <HumiditySensor/>
+            <TemperatureSensor temperature={this.state.temperature}/>
+            <HumiditySensor humidity={humidity} humidity_temperature={humidity_temperature}/>
           </Col>
           <Col>
-            <CO2Sensor/>
-            <UVSensor/>
+            <CO2Sensor ppm={ppm}/>
+            <UVSensor uv_intensity={uv_intensity}/>
           </Col>
         </Row>
         <ToastContainer autoClose={3000} />

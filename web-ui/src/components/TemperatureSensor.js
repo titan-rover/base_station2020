@@ -43,10 +43,10 @@ class TemperatureSensor extends Component {
           }
         ],
         series: [
-          { yAxis: 0, name: "Ambient (C)", data: this.props.AmbientC, color: '#2f7ed8' },
-          { yAxis: 1, name: "Ambient (F)", data: this.props.AmbientF, color: '#0d233a' },
-          { yAxis: 2, name: "Object (C)", data: this.props.ObjectC, color: '#8bbc21' },
-          { yAxis: 3, name: "Object (F)", data: this.props.ObjectF, color: '#910000' }
+          { yAxis: 0, name: "Ambient (C)", data: this.props.temperature.ambientC, color: '#2f7ed8' },
+          { yAxis: 1, name: "Ambient (F)", data: this.props.temperature.ambientF, color: '#0d233a' },
+          { yAxis: 2, name: "Object (C)", data: this.props.temperature.objectC, color: '#8bbc21' },
+          { yAxis: 3, name: "Object (F)", data: this.props.temperature.objectF, color: '#910000' }
         ]
       }
     });

@@ -58,6 +58,8 @@ class App extends Component {
     };
 
     this.connectRosBridge("ws://192.168.1.100:9090");
+    // this.connectRosBridge("ws://192.168.1.103:9090");
+    // this.connectRosBridge("ws://localhost:9090");
     this.createListeners();
     this.createPublishers();
     this.registerCallbacks();
@@ -121,14 +123,47 @@ class App extends Component {
         let x = m.orientation.x;
         let y = m.orientation.y;
         let z = m.orientation.z;
+        let w = m.orientation.w;
+
+        let roll = null;
+        let pitch = null;
+        let yaw = null;
+
+        // Roll
+        let sinr_cosp = 2 * (w * x + y * z);
+        let cosr_cosp = 1 - 2 * (x * x + y * y);
+        roll = Math.atan2(sinr_cosp, cosr_cosp);
+
+        // Pitch
+        let sinp = 2 * (w * y - z * x);
+        if (Math.abs(sinp) >= 1)
+          if (sinp >= 0)
+            pitch = Math.PI/2; // use 90 degrees if out of range
+          else
+            pitch = -Math.PI/2;
+        else
+          pitch = Math.asin(sinp);
+
+        // Yaw
+        let siny_cosp = 2 * (w * z + x * y);
+        let cosy_cosp = 1 - 2 * (y * y + z * z);
+        yaw = Math.atan2(siny_cosp, cosy_cosp);
+
+        console.log("Yaw: " + yaw);
+        console.log("Pitch: " + pitch);
+        console.log("Roll: " + roll);
+
         // console.log(m);
         // console.log(x, y, z);
         this.setState({
           imu: {
             rotation: {
-              x: -x-Math.PI/2,
+              // x: roll - Math.PI/2,
+              // y: pitch,
+              // z: yaw + Math.PI/2
+              x: x - Math.PI/2,
               y: y,
-              z: z+Math.PI/2
+              z: z + Math.PI/2
             }
           }
         });
@@ -214,7 +249,7 @@ class App extends Component {
         ros: this.ros,
         //name: "/rover_gnss",
         //messageType: "telemetry/gps",
-        throttle_rate: this.THROTTLE_RATE,
+        throttle_rate: 10,
         queue_length: this.QUEUE_LENGTH
       });
 
@@ -224,6 +259,7 @@ class App extends Component {
         ros: this.ros,
         name: "/imu",
         messageType: "sensor_msgs/Imu",
+        // messageType: "sensor_msgs/Imu",
         throttle_rate: this.THROTTLE_RATE,
         queue_length: this.QUEUE_LENGTH
       });
@@ -270,7 +306,7 @@ class App extends Component {
   render() {
     return (
       <Container fluid={true} className="pt-2">
-        <Row>
+        <Row className="mt-2">
           <Col>
             <IMU
               position={this.state.imu.position}
@@ -278,6 +314,15 @@ class App extends Component {
             />
           </Col>
           <Col>
+            <AntennaSignal decibels={this.state.antenna.decibels} />
+          </Col>
+          <Col>
+            <MobilityCurrentDraw
+              ampsA={this.state.roboclaw.a.amps}
+              ampsB={this.state.roboclaw.b.amps}
+            />
+          </Col>
+          {/* <Col>
             <MapTile currentPosition={this.state.gps.currentPosition} />
           </Col>
           <Col>
@@ -285,14 +330,14 @@ class App extends Component {
           </Col>
           <Col>
             <UltraSonicSensor distance={this.state.ultrasonic.distance} />
-          </Col>
+          </Col> */}
         </Row>
         <Row className="mt-2">
           <Col>
             <GPS />
           </Col>
         </Row>
-        <Row className="mt-2">
+        {/* <Row className="mt-2">
           <Col>
             <AntennaSignal decibels={this.state.antenna.decibels} />
           </Col>
@@ -304,7 +349,7 @@ class App extends Component {
               ampsB={this.state.roboclaw.b.amps}
             />
           </Col>
-        </Row>
+        </Row> */}
         <ToastContainer autoClose={3000} />
       </Container>
     );

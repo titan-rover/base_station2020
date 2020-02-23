@@ -2,19 +2,19 @@
 
 import rospy, time, signal
 from math import floor
-from fake_sensor_test.msg import imu
-#from sensor_msgs.msg import Imu
+#from fake_sensor_test.msg import Imu
+from sensor_msgs.msg import Imu
 #from geometry_msgs.msg import Quaternion, Vector3
 
 o = 180.00
 a = 0.00
 l = 0.00
 
-imu_pub = rospy.Publisher('/imu', imu, queue_size=1)
-#imu_pub = rospy.Publisher('/imu', Imu, queue_size=1)
+#imu_pub = rospy.Publisher('/imu', imu, queue_size=1)
+imu_pub = rospy.Publisher('/imu', Imu, queue_size=1)
 rospy.init_node('imu')
-i = imu()
-
+#i = imu()
+i = Imu()
 
 def sigint_handler(signum, frame):
     print 'CTRL+C Pressed!'
@@ -24,17 +24,17 @@ signal.signal(signal.SIGINT, sigint_handler)
 
 def fakeIt():
     global o, a, l
-    offset_o = 0.1
-    offset_a = 3.05
-    offset_l = 0.01
+    offset_o = 0.1 / 30
+    offset_a = 3.05 / 200
+    offset_l = 0.01 / 30
     while True:
         #fake IMU Posting data
-        i.yaw = ((floor(o * 10)) / 10)
-        i.pitch = ((floor(a * 100)) / 100)
-        i.roll = ((floor(l * 100)) / 100)
-        #i.orientation = ((floor(o * 10)) / 10)
-        #i.angular_velocity = ((floor(a * 100)) / 100)
-        #i.linear_acceleration = ((floor(l * 100)) / 100)
+        #i.yaw = ((floor(o * 10)) / 10)
+        #i.pitch = ((floor(a * 100)) / 100)
+        #i.roll = ((floor(l * 100)) / 100)
+        i.orientation.z = ((floor(o * 10)) / 10)
+        i.orientation.y = ((floor(a * 100)) / 100)
+        i.orientation.x = ((floor(l * 100)) / 100)
 
         if o > 200 or o < 160:
             offset_o *= -1

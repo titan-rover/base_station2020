@@ -41,7 +41,7 @@ class HumiditySensor extends Component {
         ],
         series: [
           { yAxis: 0, type:"column", name: "Humidity", data: [this.props.humidity], color: '#2f7ed8' },
-          { yAxis: 1, type:"column", name: "Humidity Temp", data: [this.props.humidity], color: '#fd873a' }
+          { yAxis: 1, type:"column", name: "Humidity Temp", data: [this.props.humidity_temperature], color: '#fd873a' }
         ]
       }
     });

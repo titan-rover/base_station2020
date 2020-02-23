@@ -10,7 +10,7 @@ class TemperatureSensor extends Component {
     this.setState({
       chartOptions: {
         chart: {
-          type: "spline",
+          type: "column",
         },
 
         xAxis: {
@@ -20,36 +20,18 @@ class TemperatureSensor extends Component {
         
         yAxis: [
           { 
-            min: 0, max: 11,
+            min: 0, max: 1000,
             title: {
-              text: "Index"
+              text: ""
             },
             labels: {
-              format: "{value}t"
-            }
-          },
-          {
-            min: 400, max: 1000,
-            title: {
-              text: "Light"
-            },
-            labels: {
-              format: "{value} nm"
+              format: "{value}mV"
             },
             opposite: true
-          },
-          {
-            min: 400, max: 1000,
-            title: {
-              text: "Degrees"
-            },
-            visible: false
           }
         ],
         series: [
-          { yAxis: 0, name: "Index", data: [this.props.uv_index], color: '#2f7ed8' },
-          { yAxis: 1, name: "Ambient (F)", data: this.props.AmbientF, color: '#0d233a' },
-          { yAxis: 2, name: "Object (C)", data: this.props.ObjectC, color: '#8bbc21' },
+          { yAxis: 0, name: "UV Intensity", data: [this.props.uv_intensity], color: '#2f7ed8' },
         ]
       }
     });

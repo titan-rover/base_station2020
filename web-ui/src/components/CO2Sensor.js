@@ -10,7 +10,7 @@ class CO2Sensor extends Component {
     this.setState({
       chartOptions: {
         chart: {
-          type: "spline",
+          type: "column",
         },
 
         title: {
@@ -24,7 +24,7 @@ class CO2Sensor extends Component {
         
         yAxis: [
           { 
-            min: -40, max: 125,
+            min: 0, max: 5000,
             title: {
               // text: "CO2 Sensor"
               text: ""
@@ -33,7 +33,7 @@ class CO2Sensor extends Component {
           }
         ],
         series: [
-          { yAxis: 0, name: "ppm", data: this.props.ppm, color: '#2f7ed8' },
+          { yAxis: 0, name: "ppm", data: [this.props.ppm], color: '#2f7ed8' },
         ]
       }
     });
