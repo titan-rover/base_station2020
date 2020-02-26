@@ -35,7 +35,7 @@ class App extends Component {
     this.state = {
       imu: {
         rotation: { x: -Math.PI/2, y: 0, z: Math.PI/2 },
-        position: { x: 0, y: -40, z: 40 },
+        position: { x: 0, y: -60, z: 40 },
         heading: null
       },
       gps: {
@@ -54,6 +54,9 @@ class App extends Component {
         b: {
           amps: []
         }
+      },
+      mobility: {
+        amps: []
       }
     };
 
@@ -158,54 +161,65 @@ class App extends Component {
         this.setState({
           imu: {
             rotation: {
-              // x: roll - Math.PI/2,
-              // y: pitch,
-              // z: yaw + Math.PI/2
-              x: x - Math.PI/2,
-              y: y,
-              z: z + Math.PI/2
-            }
+              x: -roll - Math.PI/2,
+              y: -pitch,
+              z: yaw + Math.PI/2
+              // x: x - Math.PI/2,
+              // y: y,
+              //z: z + Math.PI/2
+            },
+            position: this.state.imu.position
           }
         });
       });
     }
 
-    // if (this.mobility_listener) {
-    //   this.mobility_listener.subscribe(m => {
-    //     let prevDataA = [...this.state.roboclaw.a.amps];
-    //     let prevDataB = [...this.state.roboclaw.b.amps];
-    //     if (prevDataA.length >= 5) {
-    //       prevDataA.shift();
-    //     }
+    if (this.mobility_listener) {
+      this.mobility_listener.subscribe(m => {
+        let prevDataA = [...this.state.roboclaw.a.amps];
+        let prevDataB = [...this.state.roboclaw.b.amps];
+        let prevDataC = [...this.state.mobility.amps];
+        if (prevDataA.length >= 5) {
+          prevDataA.shift();
+        }
 
-    //     prevDataA.push([new Date().getTime(), m.current_draw]);
+        prevDataA.push([new Date().getTime(), m.current_draw]);
 
-    //     if (prevDataB.length >= 5) {
-    //       prevDataB.shift();
-    //     }
+        if (prevDataB.length >= 5) {
+          prevDataB.shift();
+        }
 
-    //     prevDataB.push([new Date().getTime(), Math.max(m.current_draw - 5, 0)]);
+        prevDataB.push([new Date().getTime(), Math.max(m.current_draw - 5, 0)]);
 
-    //     if (m.current_draw > 70) {
-    //       toast.warn("CURRENT DRAW HIGH!", {
-    //         position: toast.POSITION.BOTTOM_RIGHT,
-    //         toastId: this.HIGH_CURRENT_ID
-    //       });
-    //     }
+        if (prevDataC.length >= 5) {
+          prevDataC.shift();
+        }
 
-    //     this.setState({
+        prevDataC.push(m.current_draw);
+
+        if (m.current_draw > 70) {
+          toast.warn("CURRENT DRAW HIGH!", {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            toastId: this.HIGH_CURRENT_ID
+          });
+        }
+
+        this.setState({
     //       roboclaw: {
     //         a: { amps: prevDataA },
     //         b: { amps: prevDataB }
     //       }
-    //     });
-    //   });
-    // }
+          mobility: {
+            amps: prevDataC
+          }
+        });
+      });
+    }
 
     if (this.ultrasonic_listener) {
       this.ultrasonic_listener.subscribe(m => {
         this.setState({
-          distance: m.max_distance
+          distance: [m.max_distance]
         });
       });
     }
@@ -232,7 +246,7 @@ class App extends Component {
       this.antenna_listener = new ROSLIB.Topic({
         ros: this.ros,
         name: "/rover_db",
-        messageType: "telemetry/signal",
+        messageType: "fake_sensor_test/antenna",
         throttle_rate: this.THROTTLE_RATE,
         queue_length: this.QUEUE_LENGTH
       });
@@ -244,7 +258,7 @@ class App extends Component {
         throttle_rate: this.THROTTLE_RATE,
         queue_length: this.QUEUE_LENGTH
       });
-      
+
       this.basegps_listener = new ROSLIB.Topic({
         ros: this.ros,
         //name: "/rover_gnss",
@@ -264,18 +278,18 @@ class App extends Component {
         queue_length: this.QUEUE_LENGTH
       });
 
-      // this.mobility_listener = new ROSLIB.Topic({
-      //   ros: this.ros,
-      //   name: "/mobility",
-      //   messageType: "mobility/mtr_draw",
-      //   throttle_rate: this.THROTTLE_RATE,
-      //   queue_length: this.QUEUE_LENGTH
-      // });
+      this.mobility_listener = new ROSLIB.Topic({
+        ros: this.ros,
+        name: "/mobility",
+        messageType: "fake_sensor_test/mobility",
+        throttle_rate: this.THROTTLE_RATE,
+        queue_length: this.QUEUE_LENGTH
+      });
 
       this.ultrasonic_listener = new ROSLIB.Topic({
         ros: this.ros,
         name: "/range",
-        messageType: "sensor_msgs/Range",
+        messageType: "fake_sensor_test/ultrasonic",
         throttle_rate: this.THROTTLE_RATE,
         queue_length: this.QUEUE_LENGTH
       });
@@ -318,8 +332,7 @@ class App extends Component {
           </Col>
           <Col>
             <MobilityCurrentDraw
-              ampsA={this.state.roboclaw.a.amps}
-              ampsB={this.state.roboclaw.b.amps}
+              current_draw={this.state.mobility.amps}
             />
           </Col>
           {/* <Col>
@@ -328,9 +341,10 @@ class App extends Component {
           <Col>
             <Compass heading={this.state.imu.heading} />
           </Col>
+          <Col> */}
           <Col>
-            <UltraSonicSensor distance={this.state.ultrasonic.distance} />
-          </Col> */}
+            <UltraSonicSensor max_distance={this.state.ultrasonic.distance} />
+          </Col>
         </Row>
         <Row className="mt-2">
           <Col>

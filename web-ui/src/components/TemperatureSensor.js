@@ -44,7 +44,7 @@ class TemperatureSensor extends Component {
         ],
         series: [
           { yAxis: 0, name: "Ambient (C)", data: this.props.temperature.ambientC, color: '#2f7ed8' },
-          { yAxis: 1, name: "Ambient (F)", data: this.props.temperature.ambientF, color: '#0d233a' },
+          { yAxis: 1, name: "Ambient (F)", data: this.props.temperature.ambientF, color: '#fef65b' },
           { yAxis: 2, name: "Object (C)", data: this.props.temperature.objectC, color: '#8bbc21' },
           { yAxis: 3, name: "Object (F)", data: this.props.temperature.objectF, color: '#910000' }
         ]

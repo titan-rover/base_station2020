@@ -12,11 +12,11 @@ class MobilityCurrentDraw extends Component {
       chartOptions: {
         series: [
           {
-            data: this.props.ampsA
+            data: this.props.current_draw
           },
-          {
-            data: this.props.ampsB
-          }
+          // {
+          //   data: this.props.ampsB
+          // }
         ]
       }
     });
@@ -78,7 +78,7 @@ class MobilityCurrentDraw extends Component {
         },
 
         title: {
-          text: "Roboclaw Current Draw"
+          text: "Mobility Current Draw"
         },
 
         xAxis: {
@@ -127,19 +127,19 @@ class MobilityCurrentDraw extends Component {
             //   { value: 15, color: "orange" },
             //   { color: "green" }
             // ],
-            name: "Roboclaw A",
+            name: "Current",
             data: []
-          },
-          {
+          }
+          // {
             // zoneAxis: "y",
             // zones: [
             //   { value: 5, color: "red" },
             //   { value: 15, color: "blue" },
             //   { color: "green" }
             // ],
-            name: "Roboclaw B",
-            data: []
-          }
+          //  name: "Roboclaw B",
+          //   data: []
+          // }
         ]
       }
     };

@@ -9,6 +9,9 @@ class TemperatureSensor extends Component {
   componentWillReceiveProps() {
     this.setState({
       chartOptions: {
+              title: {
+          text: "UV Sensor"
+        },
         chart: {
           type: "column",
         },
@@ -20,7 +23,7 @@ class TemperatureSensor extends Component {
         
         yAxis: [
           { 
-            min: 0, max: 1000,
+            min: 0, max: 30,
             title: {
               text: ""
             },
