@@ -8,10 +8,8 @@ project(fake_sensor_test)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-#  bno055
-#  finalimu
-#  gnss
-#  roscpp
+  finalimu
+  roscpp
   rospy
   std_msgs
   message_generation
@@ -60,6 +58,7 @@ find_package(catkin REQUIRED COMPONENTS
    ultrasonic.msg
    mobility.msg
    antenna.msg
+   imuPygame.msg
  )
 
 ## Generate services in the 'srv' folder
