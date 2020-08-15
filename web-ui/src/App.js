@@ -11,7 +11,7 @@ import Col from "react-bootstrap/Col";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// Custom components
+// Custom React Components
 import IMU from "./components/IMU";
 import MapTile from "./components/MapTile";
 import Compass from "./components/Compass";
@@ -34,13 +34,18 @@ class App extends Component {
 
     this.state = {
       imu: {
+        // Default/Offset Oriention for Rover Model
         rotation: { x: -Math.PI/2, y: 0, z: Math.PI/2 },
         position: { x: 0, y: -60, z: 40 },
-        heading: null
+        // heading: null    // Depreciated Variable
       },
+
+      // Following Data is not currently used beyond fake testing data
+      //    GPS, Antenna Signal, Ultrasonic Sensor, and Current Draw for Claw and Mobility
       gps: {
         currentPosition: [null, null]
       },
+
       antenna: {
         decibels: []
       },
@@ -87,6 +92,10 @@ class App extends Component {
     });
 
     // Register listener callbacks
+    // Handlers for when ROS messages have been received
+    // Generally updates/sets state data which with re-render the UI with new data
+
+    // Antenna message handler
     if (this.antenna_listener) {
       this.antenna_listener.subscribe(m => {
         let prevData = [...this.state.antenna.decibels];
@@ -108,6 +117,7 @@ class App extends Component {
       });
     }
 
+    // Rover GPS message handler
     if (this.rovergps_listener) {
       this.rovergps_listener.subscribe(m => {
         console.log(m);
@@ -118,11 +128,14 @@ class App extends Component {
       });
     }
 
+    // IMU message handler
     if (this.imu_listener) {
       this.imu_listener.subscribe(m => {
         // let x = Math.cos(m.yaw) * Math.cos(m.pitch);
         // let y = Math.sin(m.yaw) * Math.cos(m.pitch);
         // let z = Math.sin(m.pitch);
+
+        // Quaternian orientation
         let x = m.orientation.x;
         let y = m.orientation.y;
         let z = m.orientation.z;
@@ -132,6 +145,8 @@ class App extends Component {
         let pitch = null;
         let yaw = null;
 
+
+        // Convertions to Roll, Pitch, and Yaw
         // Roll
         let sinr_cosp = 2 * (w * x + y * z);
         let cosr_cosp = 1 - 2 * (x * x + y * y);
@@ -152,12 +167,15 @@ class App extends Component {
         let cosy_cosp = 1 - 2 * (y * y + z * z);
         yaw = Math.atan2(siny_cosp, cosy_cosp);
 
+        // Console Output
         console.log("Yaw: " + yaw);
         console.log("Pitch: " + pitch);
         console.log("Roll: " + roll);
 
         // console.log(m);
         // console.log(x, y, z);
+
+        // Set State
         this.setState({
           imu: {
             rotation: {
@@ -174,6 +192,7 @@ class App extends Component {
       });
     }
 
+    // Current Draw message handler
     if (this.mobility_listener) {
       this.mobility_listener.subscribe(m => {
         let prevDataA = [...this.state.roboclaw.a.amps];
@@ -225,12 +244,13 @@ class App extends Component {
     }
   }
 
+  // Creates ROS Topic objects for Publishers
   createPublishers() {
     try {
       this.gps_publisher = new ROSLIB.Topic({
-        ros: this.ros,
-        name: "/gps_list",
-        messageType: "mobility/points"
+        ros: this.ros,                    // Reference to ROS Node
+        name: "/gps_list",                // Topic name to publish on
+        messageType: "mobility/points"    // "Package/File" location of message type
       });
     } catch (e) {
       //Fail to create ROS object
@@ -241,6 +261,8 @@ class App extends Component {
     }
   }
 
+  // Creates ROS Topic objects for Listeners
+  // Similar to Publishers, but includes throttle rate and queque for the incoming messages
   createListeners() {
     try {
       this.antenna_listener = new ROSLIB.Topic({
@@ -302,13 +324,15 @@ class App extends Component {
     }
   }
 
+  // Creates a ROS Node and connects to a ROS server via a url/IP
   connectRosBridge(url) {
     try {
+      // ROS Node
       this.ros = new ROSLIB.Ros({
-        url: url //connect to the local host to test on my machine
+        url: url
       });
     } catch (e) {
-      //Fail to create ROS object
+      //Fail to create ROS Node
       this.setState({
         status: "Error"
       });
@@ -317,20 +341,25 @@ class App extends Component {
     }
   }
 
+  // Renders Container of Various Components
+  // State Data is passed to the appropriate Component Prop Data
   render() {
     return (
       <Container fluid={true} className="pt-2">
         <Row className="mt-2">
           <Col>
+            {/* IMU Component */}
             <IMU
               position={this.state.imu.position}
               rotation={this.state.imu.rotation}
             />
           </Col>
           <Col>
+            {/* Antenna Component */}
             <AntennaSignal decibels={this.state.antenna.decibels} />
           </Col>
           <Col>
+            {/* Mobility Current Draw Component */}
             <MobilityCurrentDraw
               current_draw={this.state.mobility.amps}
             />
@@ -343,6 +372,7 @@ class App extends Component {
           </Col>
           <Col> */}
           <Col>
+            {/* Ultrasonic Sensor Component */}
             <UltraSonicSensor max_distance={this.state.ultrasonic.distance} />
           </Col>
         </Row>
@@ -364,6 +394,7 @@ class App extends Component {
             />
           </Col>
         </Row> */}
+        {/* Not added by Michael, no idea about Toast */}
         <ToastContainer autoClose={3000} />
       </Container>
     );
