@@ -12,6 +12,8 @@ find_package(catkin REQUIRED COMPONENTS
 #  finalimu
 #  gnss
 #  roscpp
+  finalimu
+  roscpp
   rospy
   std_msgs
   message_generation
@@ -60,6 +62,7 @@ find_package(catkin REQUIRED COMPONENTS
    ultrasonic.msg
    mobility.msg
    antenna.msg
+   imuPygame.msg
  )
 
 ## Generate services in the 'srv' folder
