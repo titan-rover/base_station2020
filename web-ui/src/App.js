@@ -8,10 +8,14 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 // Toastify imports
+// Toasts are temporary notifications that pop up for a short amount of time
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // Custom React Components
+/*
+Import classes from the different component files 
+*/
 import IMU from "./components/IMU";
 import MapTile from "./components/MapTile";
 import Compass from "./components/Compass";
@@ -22,6 +26,7 @@ import MobilityCurrentDraw from "./components/MobilityCurrentDraw";
 import ROSLIB from "roslib";
 
 class App extends Component {
+  // Set Static variables to use as values for other logic
   THROTTLE_RATE = 1000;
   QUEUE_LENGTH = 1;
 
@@ -31,8 +36,11 @@ class App extends Component {
   constructor(props) {
     super(props);
     console.log("CONSTRUCTOR CALLED");
-
+    
+    // in react, both this.props and this.state represent the rendered values (i.e what's currently on the screen)
     this.state = {
+      
+    // Set dictionaries with keys and values with data structures
       imu: {
         // Default/Offset Oriention for Rover Model
         rotation: { x: -Math.PI/2, y: 0, z: Math.PI/2 },
@@ -64,10 +72,16 @@ class App extends Component {
         amps: []
       }
     };
-
+    
+    /* this.connectRosBridge(url) is a top level function call that passes the url to the connectRosBridge(url) functions
+       inside of all the custom react imports we imported at the top. */
     this.connectRosBridge("ws://192.168.1.100:9090");
+    
     // this.connectRosBridge("ws://192.168.1.103:9090");
     // this.connectRosBridge("ws://localhost:9090");
+    
+    
+    /* These lines instantiate listeners, publishers, and callback registrations for all the react modules we imported */
     this.createListeners();
     this.createPublishers();
     this.registerCallbacks();
@@ -97,19 +111,19 @@ class App extends Component {
 
     // Antenna message handler
     if (this.antenna_listener) {
-      this.antenna_listener.subscribe(m => {
+      this.antenna_listener.subscribe(m => { // arrow functions are lambas
         let prevData = [...this.state.antenna.decibels];
         if (prevData.length >= 5) {
           prevData.shift();
         }
         if (m.signal_strength < 10) {
-          toast.error("SIGNAL STRENGTH CRITICAL!", {
+          toast.error("SIGNAL STRENGTH CRITICAL!", { // display a toast message at position: with the correct css class element (poor_signal_id) 
             position: toast.POSITION.BOTTOM_RIGHT,
             toastId: this.POOR_SIGNAL_ID
           });
         }
-        prevData.push([new Date().getTime(), m.signal_strength]);
-        this.setState({
+        prevData.push([new Date().getTime(), m.signal_strength]); // push adds to an array
+        this.setState({ //setState() schedules an update to a component's state object. When state changes the component responds by re-rendering
           antenna: {
             decibels: prevData
           }
@@ -121,7 +135,7 @@ class App extends Component {
     if (this.rovergps_listener) {
       this.rovergps_listener.subscribe(m => {
         console.log(m);
-        this.setState({
+        this.setState({ //setState() schedules an update to a component's state object. When state changes the component responds by re-rendering
           latitude: m.roverLat,
           longitude: m.roverLon
         });
@@ -176,7 +190,7 @@ class App extends Component {
         // console.log(x, y, z);
 
         // Set State
-        this.setState({
+        this.setState({ //setState() schedules an update to a component's state object. When state changes the component responds by re-rendering
           imu: {
             rotation: {
               x: -roll - Math.PI/2,
