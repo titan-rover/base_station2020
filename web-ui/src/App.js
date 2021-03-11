@@ -390,9 +390,7 @@ class App extends Component {
     return (
       <Container fluid={true} className="pt-2">
         <MyNavbar />
-
         <Container>
-          <div>{ }</div>
           <Row className="mt-2">
             <Col>
               {/* IMU Component */}
@@ -406,42 +404,42 @@ class App extends Component {
               <AntennaSignal
                 signal_strength={this.state.antenna.decibels} />
             </Col>
-            </Row>
-            <Row className="mt-2">
-              <Col>
-                {/* Mobility Current Draw Component */}
-                <MobilityCurrentDraw
-                  current_draw={this.state.mobility.amps}
-                />
-              </Col>
-            </Row>
-            <Row className="mt-2">
-              {/* Temperature Component */}
+          </Row>
+          <Row className="mt-2">
+            <Col>
+              {/* Mobility Current Draw Component */}
+              <MobilityCurrentDraw
+                current_draw={this.state.mobility.amps}
+              />
+            </Col>
+          </Row>
+          <Row className="mt-2">
+            {/* Temperature Component */}
 
-              {/* <TemperatureSensor/> */}
+            {/* <TemperatureSensor/> */}
 
-              {/* <Col>
+            {/* <Col>
             <MapTile currentPosition={this.state.gps.currentPosition} />
           </Col>
           <Col>
             <Compass heading={this.state.imu.heading} />
           </Col>
           <Col> */}
-              <Col>
-                {/* Ultrasonic Sensor Component */}
-                <UltrasonicSensor
-                  max_distance={this.state.ultrasonic.distance} />
-              </Col>
-            </Row>
-            <Row className="mt-2">
-              <Col>
-                <InverseKinematics />
-              </Col>
-              <Col>
-                <GPS />
-              </Col>
-            </Row>
-            {/* <Row className="mt-2">
+            <Col>
+              {/* Ultrasonic Sensor Component */}
+              <UltrasonicSensor
+                max_distance={this.state.ultrasonic.distance} />
+            </Col>
+          </Row>
+          <Row className="mt-2">
+            <Col>
+              <InverseKinematics />
+            </Col>
+            <Col>
+              <GPS />
+            </Col>
+          </Row>
+          {/* <Row className="mt-2">
           <Col>
             <AntennaSignal decibels={this.state.antenna.decibels} />
           </Col>
@@ -454,10 +452,10 @@ class App extends Component {
             />
           </Col>
         </Row> */}
-            {/* Not added by Michael, no idea about Toast */}
-            <ToastContainer autoClose={3000} />
+          {/* Not added by Michael, no idea about Toast */}
+          <ToastContainer autoClose={3000} />
         </Container>
-        </Container>
+      </Container>
     );
   }
 }
