@@ -7,25 +7,25 @@ class IMU extends Component {
 
     this.state = {
       // position: this.props.position,
-      // rotation: this.props.rotation
-      // position: { x: 0, y: -40, z: 40 },
-      // rotation: { x: -Math.PI/2, y: 0, z: Math.PI/2 }
+      // rotation: this.props.rotation,
+      position: { x: -500, y: 0, z: 0 },
+      rotation: { x: -Math.PI/2, y: 0, z: Math.PI/2 }
     };
 
-    // setInterval(() => {
-    //   let rotation = { ...this.state.rotation };
-    //   rotation.y++;
-    //   this.setState({ rotation: rotation });
-    // }, 1000);
+  //   setInterval(() => {
+  //     let rotation = { ...this.state.rotation };
+  //     rotation.y++;
+  //     this.setState({ rotation: rotation });
+  //   }, 1000);
   }
 
-  // componentDidMount() {
-  //   this.tick = Tick(() => {
-  //     let position = { ...this.state.position };
-  //     let rotation = { ...this.state.rotation };
-  //     this.setState({ position: position, rotation: rotation });
-  //   });
-  // }
+  componentDidMount() {
+    this.tick = Tick(() => {
+      let position = { ...this.state.position };
+      let rotation = { ...this.state.rotation };
+      this.setState({ position: position, rotation: rotation });
+    });
+  }
 
   render() {
     return (
@@ -35,7 +35,7 @@ class IMU extends Component {
           width={500}
           height={500}
           texPath=""
-          src="./rover-model-v2.obj"
+          src="./RoverModel2020.stl.obj"
           position={this.props.position}
           rotation={this.props.rotation}
         />

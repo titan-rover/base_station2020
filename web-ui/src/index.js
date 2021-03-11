@@ -6,6 +6,7 @@ import App from "./App";
 import Science from "./Science";
 import Extreme from "./Extreme";
 import Autonomous from "./Autonomous";
+import XR from "./XR";
 import * as serviceWorker from "./serviceWorker";
 
 const routing = (
@@ -22,6 +23,9 @@ const routing = (
       </Route>
       <Route path="/autonomous">
         <Autonomous />
+      </Route>
+      <Route path="/XR">
+        <XR />
       </Route>
     </Switch>
   </Router>

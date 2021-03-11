@@ -6,13 +6,23 @@ import { toast } from "react-toastify";
 
 DarkUnica(Highcharts);
 
-class MobilityCurrentDraw extends Component {
+class UltrasonicSensor extends Component {
   componentWillReceiveProps() {
-  
+    this.setState({
+      chartOptions: {
+        series: [
+          {
+            data: this.props.max_distance
+          },
+          // {
+          //   data: this.props.ampsB
+          // }
+        ]
+      }
+    })
   }
 
   componentDidMount() {
-
   }
 
   constructor(props) {
@@ -22,7 +32,7 @@ class MobilityCurrentDraw extends Component {
       count: 0,
       chartOptions: {
         chart: {
-          type: "column"
+          type: "spline"
         },
 
         time: {
@@ -37,7 +47,7 @@ class MobilityCurrentDraw extends Component {
           min: 0,
           max: 80,
           title: {
-            text: "Value"
+            text: "Distance"
           },
           plotLines: [
             {
@@ -76,7 +86,8 @@ class MobilityCurrentDraw extends Component {
             //   { color: "green" }
             // ],
             name: "Distance",
-            data: [this.props.max_distance]
+            data: []
+            // data: [this.props.max_distance]
           }
         ]
       }
@@ -96,4 +107,4 @@ class MobilityCurrentDraw extends Component {
   }
 }
 
-export default MobilityCurrentDraw;
+export default UltrasonicSensor;

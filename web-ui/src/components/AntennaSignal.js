@@ -11,12 +11,13 @@ class AntennaSignal extends Component {
       chartOptions: {
         series: [
           {
-            data: this.props.decibels
-          }
+            data: this.props.signal_strength
+          },
         ]
       }
     });
   }
+  componentDidMount() {}
 
   constructor(props) {
     super(props);
@@ -37,15 +38,14 @@ class AntennaSignal extends Component {
         },
 
         xAxis: {
-          type: "datetime",
-          visible: false
+          type: "datetime"
         },
 
         yAxis: {
           min: 0,
           max: 60,
           title: {
-            text: "Signal Strength"
+            text: "Decibels"
           },
           plotLines: [
             {
@@ -57,7 +57,7 @@ class AntennaSignal extends Component {
         },
 
         legend: {
-          enabled: false
+          enabled: true
         },
 
         plotOptions: {
@@ -76,7 +76,7 @@ class AntennaSignal extends Component {
             //   { value: 15, color: "orange" },
             //   { color: "green" }
             // ],
-            name: "Random data",
+            name: "Signal",
             data: []
           }
         ]

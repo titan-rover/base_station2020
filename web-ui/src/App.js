@@ -2,10 +2,14 @@
 import React, { Component } from "react";
 
 // Bootstrap imports
-import "./darkly-bootstrap.min.css";
+import "bootswatch/dist/darkly/bootstrap.min.css";
+import 'jquery/dist/jquery.min.js';
+import 'bootstrap/dist/js/bootstrap.min.js';
+
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+
 
 // Toastify imports
 // Toasts are temporary notifications that pop up for a short amount of time
@@ -19,11 +23,14 @@ Import classes from the different component files
 import IMU from "./components/IMU";
 import MapTile from "./components/MapTile";
 import Compass from "./components/Compass";
-import UltraSonicSensor from "./components/UltrasonicSensor";
+import UltrasonicSensor from "./components/UltrasonicSensor";
 import GPS from "./components/GPS";
 import AntennaSignal from "./components/AntennaSignal";
 import MobilityCurrentDraw from "./components/MobilityCurrentDraw";
 import ROSLIB from "roslib";
+import InverseKinematics from "./components/InverseKinematics";
+import TemperatureSensor from "./components/TemperatureSensor";
+import MyNavbar from "./components/Navbar";
 
 class App extends Component {
   // Set Static variables to use as values for other logic
@@ -36,14 +43,14 @@ class App extends Component {
   constructor(props) {
     super(props);
     console.log("CONSTRUCTOR CALLED");
-    
+
     // in react, both this.props and this.state represent the rendered values (i.e what's currently on the screen)
     this.state = {
-      
-    // Set dictionaries with keys and values with data structures
+
+      // Set dictionaries with keys and values with data structures
       imu: {
         // Default/Offset Oriention for Rover Model
-        rotation: { x: -Math.PI/2, y: 0, z: Math.PI/2 },
+        rotation: { x: -Math.PI / 2, y: 0, z: Math.PI / 2 },
         position: { x: 0, y: -60, z: 40 },
         // heading: null    // Depreciated Variable
       },
@@ -58,7 +65,7 @@ class App extends Component {
         decibels: []
       },
       ultrasonic: {
-        distance: null
+        distance: []
       },
       roboclaw: {
         a: {
@@ -72,15 +79,15 @@ class App extends Component {
         amps: []
       }
     };
-    
+
     /* this.connectRosBridge(url) is a top level function call that passes the url to the connectRosBridge(url) functions
        inside of all the custom react imports we imported at the top. */
-    this.connectRosBridge("ws://192.168.1.100:9090");
-    
+    //this.connectRosBridge("ws://192.168.1.100:9090");
+
     // this.connectRosBridge("ws://192.168.1.103:9090");
-    // this.connectRosBridge("ws://localhost:9090");
-    
-    
+    this.connectRosBridge("ws://localhost:9090");
+
+
     /* These lines instantiate listeners, publishers, and callback registrations for all the react modules we imported */
     this.createListeners();
     this.createPublishers();
@@ -88,7 +95,7 @@ class App extends Component {
   }
 
   registerCallbacks() {
-    // Register ros callbacks
+    //Register ros callbacks
     this.ros.on("connection", () => {
       this.setState({
         status: "Connected"
@@ -113,16 +120,20 @@ class App extends Component {
     if (this.antenna_listener) {
       this.antenna_listener.subscribe(m => { // arrow functions are lambas
         let prevData = [...this.state.antenna.decibels];
+
         if (prevData.length >= 5) {
           prevData.shift();
         }
+
+        prevData.push([new Date().getTime(), m.signal_strength]); // push adds to an array
+
         if (m.signal_strength < 10) {
           toast.error("SIGNAL STRENGTH CRITICAL!", { // display a toast message at position: with the correct css class element (poor_signal_id) 
             position: toast.POSITION.BOTTOM_RIGHT,
             toastId: this.POOR_SIGNAL_ID
           });
         }
-        prevData.push([new Date().getTime(), m.signal_strength]); // push adds to an array
+
         this.setState({ //setState() schedules an update to a component's state object. When state changes the component responds by re-rendering
           antenna: {
             decibels: prevData
@@ -170,9 +181,9 @@ class App extends Component {
         let sinp = 2 * (w * y - z * x);
         if (Math.abs(sinp) >= 1)
           if (sinp >= 0)
-            pitch = Math.PI/2; // use 90 degrees if out of range
+            pitch = Math.PI / 2; // use 90 degrees if out of range
           else
-            pitch = -Math.PI/2;
+            pitch = -Math.PI / 2;
         else
           pitch = Math.asin(sinp);
 
@@ -193,9 +204,9 @@ class App extends Component {
         this.setState({ //setState() schedules an update to a component's state object. When state changes the component responds by re-rendering
           imu: {
             rotation: {
-              x: -roll - Math.PI/2,
+              x: -roll - Math.PI / 2,
               y: -pitch,
-              z: yaw + Math.PI/2
+              z: yaw + Math.PI / 2
               // x: x - Math.PI/2,
               // y: y,
               //z: z + Math.PI/2
@@ -212,6 +223,7 @@ class App extends Component {
         let prevDataA = [...this.state.roboclaw.a.amps];
         let prevDataB = [...this.state.roboclaw.b.amps];
         let prevDataC = [...this.state.mobility.amps];
+
         if (prevDataA.length >= 5) {
           prevDataA.shift();
         }
@@ -238,10 +250,10 @@ class App extends Component {
         }
 
         this.setState({
-    //       roboclaw: {
-    //         a: { amps: prevDataA },
-    //         b: { amps: prevDataB }
-    //       }
+          //       roboclaw: {
+          //         a: { amps: prevDataA },
+          //         b: { amps: prevDataB }
+          //       }
           mobility: {
             amps: prevDataC
           }
@@ -251,8 +263,25 @@ class App extends Component {
 
     if (this.ultrasonic_listener) {
       this.ultrasonic_listener.subscribe(m => {
+        let prevDataD = [...this.state.ultrasonic.distance];
+
+        if (prevDataD.length >= 5) {
+          prevDataD.shift();
+        }
+
+        prevDataD.push([new Date().getTime(), m.max_distance]); // push adds to an array
+
+        if (m.max_distance < 10) {
+          toast.error("LESS THAN 10 DISTANCE!", { // display a toast message at position: with the correct css class element (poor_signal_id) 
+            position: toast.POSITION.BOTTOM_RIGHT,
+            toastId: this.POOR_SIGNAL_ID
+          });
+        }
+
         this.setState({
-          distance: [m.max_distance]
+          ultrasonic: {
+            distance: prevDataD
+          }
         });
       });
     }
@@ -281,7 +310,7 @@ class App extends Component {
     try {
       this.antenna_listener = new ROSLIB.Topic({
         ros: this.ros,
-        name: "/rover_db",
+        name: "/antenna",
         messageType: "fake_sensor_test/antenna",
         throttle_rate: this.THROTTLE_RATE,
         queue_length: this.QUEUE_LENGTH
@@ -324,7 +353,7 @@ class App extends Component {
 
       this.ultrasonic_listener = new ROSLIB.Topic({
         ros: this.ros,
-        name: "/range",
+        name: "/ultrasonic",
         messageType: "fake_sensor_test/ultrasonic",
         throttle_rate: this.THROTTLE_RATE,
         queue_length: this.QUEUE_LENGTH
@@ -360,42 +389,59 @@ class App extends Component {
   render() {
     return (
       <Container fluid={true} className="pt-2">
-        <Row className="mt-2">
-          <Col>
-            {/* IMU Component */}
-            <IMU
-              position={this.state.imu.position}
-              rotation={this.state.imu.rotation}
-            />
-          </Col>
-          <Col>
-            {/* Antenna Component */}
-            <AntennaSignal decibels={this.state.antenna.decibels} />
-          </Col>
-          <Col>
-            {/* Mobility Current Draw Component */}
-            <MobilityCurrentDraw
-              current_draw={this.state.mobility.amps}
-            />
-          </Col>
-          {/* <Col>
+        <MyNavbar />
+
+        <Container>
+          <div>{ }</div>
+          <Row className="mt-2">
+            <Col>
+              {/* IMU Component */}
+              <IMU
+                position={this.state.imu.position}
+                rotation={this.state.imu.rotation}
+              />
+            </Col>
+            <Col>
+              {/* Antenna Component */}
+              <AntennaSignal
+                signal_strength={this.state.antenna.decibels} />
+            </Col>
+            </Row>
+            <Row className="mt-2">
+              <Col>
+                {/* Mobility Current Draw Component */}
+                <MobilityCurrentDraw
+                  current_draw={this.state.mobility.amps}
+                />
+              </Col>
+            </Row>
+            <Row className="mt-2">
+              {/* Temperature Component */}
+
+              {/* <TemperatureSensor/> */}
+
+              {/* <Col>
             <MapTile currentPosition={this.state.gps.currentPosition} />
           </Col>
           <Col>
             <Compass heading={this.state.imu.heading} />
           </Col>
           <Col> */}
-          <Col>
-            {/* Ultrasonic Sensor Component */}
-            <UltraSonicSensor max_distance={this.state.ultrasonic.distance} />
-          </Col>
-        </Row>
-        <Row className="mt-2">
-          <Col>
-            <GPS />
-          </Col>
-        </Row>
-        {/* <Row className="mt-2">
+              <Col>
+                {/* Ultrasonic Sensor Component */}
+                <UltrasonicSensor
+                  max_distance={this.state.ultrasonic.distance} />
+              </Col>
+            </Row>
+            <Row className="mt-2">
+              <Col>
+                <InverseKinematics />
+              </Col>
+              <Col>
+                <GPS />
+              </Col>
+            </Row>
+            {/* <Row className="mt-2">
           <Col>
             <AntennaSignal decibels={this.state.antenna.decibels} />
           </Col>
@@ -408,9 +454,10 @@ class App extends Component {
             />
           </Col>
         </Row> */}
-        {/* Not added by Michael, no idea about Toast */}
-        <ToastContainer autoClose={3000} />
-      </Container>
+            {/* Not added by Michael, no idea about Toast */}
+            <ToastContainer autoClose={3000} />
+        </Container>
+        </Container>
     );
   }
 }

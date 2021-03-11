@@ -4,7 +4,7 @@ import rospy, time, signal, random
 from fake_sensor_test.msg import mobility
 
 mobility_pub = rospy.Publisher('/mobility', mobility, queue_size=1)
-rospy.init_node('ultrasonic')
+rospy.init_node('mobility')
 m = mobility()
 
 def sigint_handler(signum, frame):
@@ -15,6 +15,6 @@ signal.signal(signal.SIGINT, sigint_handler)
 
 if __name__ == '__main__':
     while True:
-        m.current_draw = random.randint(1, 76)
+        m.current_draw = random.randint(1, 176)
         mobility_pub.publish(m)
         time.sleep(.2)

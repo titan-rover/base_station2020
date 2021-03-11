@@ -89,7 +89,7 @@ class MobilityCurrentDraw extends Component {
           min: 0,
           max: 80,
           title: {
-            text: "Value"
+            text: "Amps"
           },
           plotLines: [
             {
