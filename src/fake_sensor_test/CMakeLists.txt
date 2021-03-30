@@ -12,7 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
 #  finalimu
 #  gnss
 #  roscpp
-  finalimu
+#  finalimu
   roscpp
   rospy
   std_msgs
