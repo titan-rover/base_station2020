@@ -19,7 +19,8 @@ class MyNavbar extends Component {
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="https://controls.titanrover.com/XR">XR Mode</a>
+                                {/* <a class="nav-link" href="https://controls.titanrover.com/XR">XR Mode</a> */}
+                                <a class="nav-link" href="http://localhost:3000/XR">XR Mode</a>
                             </li>
                         </ul>
                     </div>
