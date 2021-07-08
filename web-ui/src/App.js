@@ -85,7 +85,7 @@ class App extends Component {
     //this.connectRosBridge("ws://192.168.1.100:9090");
 
     // this.connectRosBridge("ws://192.168.1.103:9090");
-    this.connectRosBridge("ws://localhost:9090");
+    this.connectRosBridge("wss://controls.titanrover.com:9443");
 
 
     /* These lines instantiate listeners, publishers, and callback registrations for all the react modules we imported */
