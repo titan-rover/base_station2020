@@ -3,10 +3,11 @@ import ReactDOM from "react-dom";
 import { Route, Link, Switch, BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
 import App from "./App";
-import Science from "./Science";
+import Science from "./OLD_Science";
 import Extreme from "./Extreme";
 import Autonomous from "./Autonomous";
 import XR from "./XR";
+import Electricals from "./Electricals";
 import * as serviceWorker from "./serviceWorker";
 
 const routing = (
@@ -26,6 +27,9 @@ const routing = (
       </Route>
       <Route path="/XR">
         <XR />
+      </Route>
+      <Route path="/electricals">
+        <Electricals />
       </Route>
     </Switch>
   </Router>

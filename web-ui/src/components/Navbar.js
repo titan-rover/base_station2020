@@ -26,6 +26,10 @@ class MyNavbar extends Component {
                                 <a class="nav-link" href="https://controls.titanrover.com">Science Mode</a>
                                 {/* <a class="nav-link" href="http://localhost:3000/science">Science</a> */}
                             </li>
+                            <li class="nav-item">
+                                {/* <a class="nav-link" href="https://controls.titanrover.com">Electricals Mode</a> */}
+                                <a class="nav-link" href="http://localhost:3000/electricals">Electricals Mode</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
