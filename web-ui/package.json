@@ -17,6 +17,7 @@
     "react": "^16.12.0",
     "react-3d-viewer": "^1.0.12",
     "react-bootstrap": "^1.0.0-beta.16",
+    "react-canvas-gauges": "^1.2.1",
     "react-compass": "^0.1.0",
     "react-dom": "^16.12.0",
     "react-router": "^5.1.2",

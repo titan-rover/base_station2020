@@ -3,6 +3,7 @@
 
 //import react components
 import React, { Component } from 'react';
+import {RadialGauge} from 'react-canvas-gauges';
 
 // // Bootstrap imports
 import "bootswatch/dist/darkly/bootstrap.min.css";
@@ -164,6 +165,19 @@ class Electricals extends Component {
             <Container fluid={true} className="pt-2">
                 <MyNavbar />
                 <Container>
+                    <Row className="mt-2">
+                        <Col>
+                            <RadialGauge
+                                units='°C'
+                                title='Temperature'
+                                value={this.state.temperature}
+                                minValue={0}
+                                maxValue={50}
+                                majorTicks={['0', '5', '15', '20', '25', '30', '35', '40', '45', '50']}
+                                minorTicks={2}
+                            ></RadialGauge>
+                        </Col>
+                    </Row>
                     <Row className="mt-2">
                         <Col>
                             <MobilityCurrentDraw
