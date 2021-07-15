@@ -1,0 +1,10 @@
+.nav-links {
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5rem 0.5rem;
+    height: 100%;
+}
+
+.nav-item .active {
+    color: #ffdd40;
+}
