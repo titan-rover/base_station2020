@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { Route, Link, Switch, BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
 import App from "./App";
-import Science from "./OLD_Science";
+import Science from "./Science";
 import Extreme from "./Extreme";
 import Autonomous from "./Autonomous";
 import XR from "./XR";

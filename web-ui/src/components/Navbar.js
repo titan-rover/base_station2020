@@ -8,7 +8,7 @@ class MyNavbar extends Component {
         return (
             <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
                 <div class="container">
-                    <a class="navbar-brand" href="https://controls.titanrover.com">Titan Rover User Interface</a>
+                    <NavLink exact to ="/"className="nav-links">Titan Rover User Interface</NavLink>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
