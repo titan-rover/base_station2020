@@ -13,10 +13,14 @@ class Science extends Component {
             <Container>
                 <Row>
                     <Col>
-                    <div style={{border: "1px solid green", height: "720px", width: "1280px"}}> Stream
+                    <div style={{border: "1px solid green", height: "500px", width: "500px"}}> Stream
                         </div>
                         </Col>
-                    <Col></Col>
+                    <Col>
+                        <div style={{border: "1px solid green", height: "400px", width: "540px"}}>
+                            Modified Image
+                        </div>
+                    </Col>
                 </Row>
                 <Row>
                     <Col><div>
