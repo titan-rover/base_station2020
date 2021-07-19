@@ -84,8 +84,8 @@ class App extends Component {
        inside of all the custom react imports we imported at the top. */
     //this.connectRosBridge("ws://192.168.1.100:9090");
 
-    // this.connectRosBridge("ws://192.168.1.103:9090");
-    this.connectRosBridge("wss://controls.titanrover.com:9443");
+    this.connectRosBridge("ws://localhost:9090");
+    // this.connectRosBridge("wss://controls.titanrover.com:9443");
 
 
     /* These lines instantiate listeners, publishers, and callback registrations for all the react modules we imported */
@@ -193,9 +193,9 @@ class App extends Component {
         yaw = Math.atan2(siny_cosp, cosy_cosp);
 
         // Console Output
-        console.log("Yaw: " + yaw);
-        console.log("Pitch: " + pitch);
-        console.log("Roll: " + roll);
+        // console.log("Yaw: " + yaw);
+        // console.log("Pitch: " + pitch);
+        // console.log("Roll: " + roll);
 
         // console.log(m);
         // console.log(x, y, z);
@@ -250,10 +250,10 @@ class App extends Component {
         }
 
         this.setState({
-          //       roboclaw: {
-          //         a: { amps: prevDataA },
-          //         b: { amps: prevDataB }
-          //       }
+                roboclaw: {
+                  a: { amps: prevDataA },
+                  b: { amps: prevDataB }
+                },
           mobility: {
             amps: prevDataC
           }

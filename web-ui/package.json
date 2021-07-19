@@ -9,6 +9,7 @@
     "aframe": "^1.2.0",
     "bootstrap": "^4.6.0",
     "bootswatch": "^4.6.0",
+    "canvas-gauges": "^2.1.7",
     "express": "^4.17.1",
     "highcharts": "^8.2.2",
     "highcharts-react-official": "^2.2.2",

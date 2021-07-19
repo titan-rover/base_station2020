@@ -12,6 +12,7 @@ class Science extends Component {
     render() {
         return (
             <Container>
+                <MyNavbar/>
                 <Row>
                     <Col>
                     <div style={{border: "1px solid green", height: "500px", width: "500px"}}> Stream

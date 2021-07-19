@@ -3,7 +3,7 @@
 
 //import react components
 import React, { Component } from 'react';
-import { RadialGauge } from 'react-canvas-gauges';
+import ReactRadialGauge from './components/Gauges';
 
 // // Bootstrap imports
 import "bootswatch/dist/darkly/bootstrap.min.css";
@@ -24,6 +24,7 @@ import ROSLIB from "roslib";
 
 //import css
 import "./css/XR.css";
+
 
 class Electricals extends Component {
 
@@ -50,8 +51,8 @@ class Electricals extends Component {
         inside of all the custom react imports we imported at the top. */
         //this.connectRosBridge("ws://192.168.1.100:9090");
 
-        // this.connectRosBridge("ws://192.168.1.103:9090");
-        this.connectRosBridge("wss://controls.titanrover.com:9443");
+        this.connectRosBridge("ws://localhost:9090");
+        // this.connectRosBridge("wss://controls.titanrover.com:9443");
 
 
         /* These lines instantiate listeners, publishers, and callback registrations for all the react modules we imported */
@@ -168,28 +169,30 @@ class Electricals extends Component {
                     <Row className="mt-2">
                         <Col>
                             <Container align="center">
-                                <RadialGauge
+                                <ReactRadialGauge
                                     width={500}
                                     height={500}
+                                    animationDuration={150}
+                                    animationRule={'linear'}
                                     units='AMPS'
                                     title='Motor 1'
-                                    value={this.state.amps}
+                                    value={this.state.mobility.amps}
                                     minValue={0}
                                     maxValue={100}
                                     majorTicks={['0', '15', '30', '45', '60', '75']}
                                     minorTicks={5}
-                                ></RadialGauge>
-                                <RadialGauge
+                                ></ReactRadialGauge>
+                                <ReactRadialGauge
                                     width={500}
                                     height={500}
                                     units='MPH'
                                     title='Motor 1'
-                                    value={this.state.temperature}
+                                    value={0}
                                     minValue={0}
                                     maxValue={100}
                                     majorTicks={['0', '5', '15', '20', '25', '30', '35', '40', '45', '50']}
                                     minorTicks={2}
-                                ></RadialGauge>
+                                ></ReactRadialGauge>
                             </Container>
 
                         </Col>
