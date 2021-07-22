@@ -9,6 +9,7 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { Button, Dropdown } from 'react-bootstrap'
 
 
 // Toastify imports
@@ -31,6 +32,22 @@ import ROSLIB from "roslib";
 import InverseKinematics from "./components/InverseKinematics";
 import TemperatureSensor from "./components/TemperatureSensor";
 import MyNavbar from "./components/Navbar";
+// import { Dropdown } from "bootstrap";
+
+const styles = {
+  grid: {
+      paddingLeft: 0,
+      paddingRight: 0
+  },
+  row: {
+      marginLeft: 0,
+      marginRight: 0
+  },
+  col: {
+      paddingLeft: 0,
+      paddingRight: 0
+  }
+};
 
 class App extends Component {
   // Set Static variables to use as values for other logic
@@ -384,12 +401,78 @@ class App extends Component {
     }
   }
 
+  
+
   // Renders Container of Various Components
   // State Data is passed to the appropriate Component Prop Data
   render() {
     return (
       <Container fluid={true} className="pt-2">
         <MyNavbar />
+        <Container fluid={true}>
+          <Row style={{margin: "0px"}}>
+            <Col>
+              <div style={{border: "1px solid green", height: "300px", width: "300px"}}>
+                Cam 1(L)
+              </div>
+              <Dropdown>
+                <Dropdown.Toggle id= 'dropdown-basic'>
+                  Settings
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item href="#/action-1"> Action</Dropdown.Item>
+                  <Dropdown.Item href="#/action-2"> Action 2</Dropdown.Item>
+                  <Dropdown.Item href="#/action-3"> Action 3</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </Col>
+            <Col>
+              <div style={{border: "1px solid green", height: "300px", width: "300px"}}>
+                Cam 2(Fwd)
+              </div>
+              <Dropdown>
+                <Dropdown.Toggle id= 'dropdown-basic'>
+                  Settings
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item href="#/action-1"> Action</Dropdown.Item>
+                  <Dropdown.Item href="#/action-2"> Action 2</Dropdown.Item>
+                  <Dropdown.Item href="#/action-3"> Action 3</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </Col>
+            <Col>
+              <div style={{border: "1px solid green", height: "300px", width: "300px"}}>
+                Cam 3(R)
+              </div>
+              <Dropdown>
+                <Dropdown.Toggle id= 'dropdown-basic'>
+                  Settings
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item href="#/action-1"> Action</Dropdown.Item>
+                  <Dropdown.Item href="#/action-2"> Action 2</Dropdown.Item>
+                  <Dropdown.Item href="#/action-3"> Action 3</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </Col>
+            <Col>
+              <div style={{border: "1px solid green", height: "300px", width: "300px"}}>
+                Cam 4(Bck)
+              </div>
+              <Dropdown>
+                <Dropdown.Toggle id= 'dropdown-basic'>
+                  Settings
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item href="#/action-1"> Action</Dropdown.Item>
+                  <Dropdown.Item href="#/action-2"> Action 2</Dropdown.Item>
+                  <Dropdown.Item href="#/action-3"> Action 3</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </Col>
+          </Row>
+        </Container>
         <Container>
           <Row className="mt-2">
             <Col>
