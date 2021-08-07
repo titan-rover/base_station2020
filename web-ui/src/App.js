@@ -210,12 +210,12 @@ class App extends Component {
         yaw = Math.atan2(siny_cosp, cosy_cosp);
 
         // Console Output
-        // console.log("Yaw: " + yaw);
-        // console.log("Pitch: " + pitch);
-        // console.log("Roll: " + roll);
+        console.log("Yaw: " + yaw);
+        console.log("Pitch: " + pitch);
+        console.log("Roll: " + roll);
 
-        // console.log(m);
-        // console.log(x, y, z);
+        console.log(m);
+        console.log(x, y, z);
 
         // Set State
         this.setState({ //setState() schedules an update to a component's state object. When state changes the component responds by re-rendering
